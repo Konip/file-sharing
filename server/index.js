@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const socketio = require("socket.io");
 const { Server } = require("socket.io");
 const path = require('path');
 
@@ -26,7 +25,7 @@ io.on('connection', (socket) => {
   console.log(`connection ${socket.id}`);
 
   socket.on('fs', arg => {
-    console.log(arg)
+    // console.log(arg)
 
     socket.broadcast.emit('fs-send', arg)
   })

@@ -1,8 +1,8 @@
-* {
-    margin: 0px;
-    padding: 0px;
+*, *::after, *::before {
     box-sizing: border-box;
-}
+    margin: 0;
+    padding: 0;
+  }
 
 body {
     background: #f5f5f5;
@@ -130,4 +130,30 @@ body {
     font-size: 16px;
     padding: 5px;
     border-top: 1px solid #eee;
+}
+.progress{
+    position:relative;
+    margin:80px;
+    width:220px; height:220px;
+}
+canvas {
+    display: block;
+    position:absolute;
+    top:0;
+    left:0;
+}
+span {
+    color:#555;
+    display:block;
+    line-height:220px;
+    text-align:center;
+    width:220px;
+    font-family:sans-serif;
+    font-size:40px;
+    font-weight:100;
+    margin-left:5px;
+}
+
+input {
+    width: 200px;
 }

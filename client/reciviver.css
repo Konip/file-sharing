@@ -1,0 +1,68 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.transfer {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
+    height: 25.625em;
+    left: 5em;
+    margin: -12.8125em 0 0;
+    position: absolute;
+    top: 50%;
+    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+    width: 17.5em;
+    z-index: 30;
+}
+
+.panel {
+    background: #fff;
+    bottom: 0;
+    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate3d(105%, 0, 0);
+    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+    z-index: 37;
+
+    width: 55em;
+}
+
+.progress {
+    position: relative;
+    /* margin:80px; */
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#cyrcle {
+    /* margin: 0 auto;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%); */
+}
+.progress-number{
+    font-size: 4em;
+    position: absolute;
+    /* top: 50%;
+    left: 50%; */
+}
