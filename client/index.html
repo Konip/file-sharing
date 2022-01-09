@@ -6,36 +6,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Document</title>
+    <title>qq</title>
 </head>
 
 <body>
     <div class="app">
-        <div class="screen join-screen">
-            <div class="form">
-                <h2>Share your files</h2>
-                <div class="form-input">
-                    <button id="sender-start-con-btn">Create room</button>
+        <div class="transfer">
+            <div class="transfer__container">
+                <div class="progress" id="progress" data-percent="0">
+                    <span class="progress-number">0</span>
+                    <canvas id="cyrcle"></canvas>
                 </div>
-                <div class="form-input" id="join-id">
-                    <b>Room ID</b>
-                    <span>0000-0000-0000</span>
+                <div class="transfer__body">
+                    <!-- <div class="uploader__files">
+                        <svg viewBox="0 0 72 72">
+                            <path
+                                d="M36.493 72C16.118 72 0 55.883 0 36.493 0 16.118 16.118 0 36.493 0 55.882 0 72 16.118 72 36.493 72 55.882 55.883 72 36.493 72zM34 34h-9c-.553 0-1 .452-1 1.01v1.98A1 1 0 0 0 25 38h9v9c0 .553.452 1 1.01 1h1.98A1 1 0 0 0 38 47v-9h9c.553 0 1-.452 1-1.01v-1.98A1 1 0 0 0 47 34h-9v-9c0-.553-.452-1-1.01-1h-1.98A1 1 0 0 0 34 25v9z"
+                                fill="#409fff" fill-rule="nonzero"></path>
+                        </svg>
+                        <label for="input"></label>
+                        <input type="file" id="file-input">
+                        <h2>Upload files</h2>
+                    </div> -->
+                    <div class="transfer__contents">
+                        <video class="illustration" autoplay loop
+                            src="https://prod-cdn.wetransfer.net/packs/media/transfer_window/transfer_completed-1-95a6a127.mp4"
+                            type="video/mp4" preload="auto"></video>
+                        <h2>You’re done!</h2>
+                        <p class="complete__text">
+                            Copy your download link or
+                            <!-- <a href="">see what's inside</a> -->
+                        </p>
+                        <div class="transfer-link">
+                            <div class="transfer-link__url-wrapper">
+                                <input class="transfer-link__url" value="qqq" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="transfer__footer">
+                    <div class="transfer__button">Get a link</div>
                 </div>
             </div>
+
         </div>
-        <div class="screen fs-screen active">
-            <div class="file-input">
-                <label for="file-input">
-                    Click here to select files for sharing
-                </label>
-                <input type="file" id="file-input">
-            </div>
-            <div class="files-list">
-                <div class="title">Shared files:</div>
-            
-            </div>
+        <div class="panel">
+
         </div>
     </div>
+
     <script type="text/javascript" src="socket.io/socket.io.js"></script>
     <script src="client.js"></script>
 </body>

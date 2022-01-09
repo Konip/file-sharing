@@ -2,158 +2,231 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-  }
-
-body {
-    background: #f5f5f5;
-    font-family: "Roboto", sans-serif;
-}
-
-.screen {
-    display: none;
-}
-
-.screen.active {
-    display: block;
 }
 
 .app {
-    position: fixed;
-    top: 0px;
-    left: 50%;
-    transform: translateX(-50%);
     height: 100%;
     width: 100%;
-    max-width: 500px;
-    background: #fff;
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #ddd;
+    background-color: rgb(253, 251, 251);
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
-.join-screen .form {
+.transfer__body h2 {
+    font-size: 1.375em;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.transfer {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
+    height: 25.625em;
+    left: 5em;
+    margin: -12.8125em 0 0;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    padding: 50px
+    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+    width: 17.5em;
+    z-index: 30;
+    font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
 }
 
-.join-screen .form-input {
-    margin: 10px 0px;
+.transfer__container {
+    position: relative;
 }
 
-.join-screen .form h2 {
-    font-size: 40px;
-    line-height: 45px;
-    color: #222;
-    margin-bottom: 20px;
-}
 
-.join-screen .form button {
-    background: #111;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 20px;
-    color: #fff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-}
 
-.join-screen .form #join-id b {
-    color: #222;
-    display: block;
-    margin-top: 20px;
-}
-
-.join-screen .form #join-id span {
-    display: inline-block;
-    font-size: 25px;
-    font-family: monospace;
-    color: #222;
-    padding: 10px;
-    border: 1px solid #111;
-    margin-top: 5px;
-}
-
-.fs-screen {
-    padding: 10px;
-
-}
-
-.fs-screen .file-input {
+.progress {
+    position: relative;
+    /* margin:80px; */
     width: 100%;
-    border: 2px dashed #555;
-}
+    height: 100%;
 
-.fs-screen .file-input label {
-    display: block;
-    width: 100%;
-    padding: 40px 50px;
-    text-align: center;
-    color: #111;
-    font-size: 18px;
-}
-
-.fs-screen .file-input input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     display: none;
 }
 
-.fs-screen .files-list {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
+#cyrcle {
+    /* margin: 0 auto;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%); */
 }
 
-.fs-screen .files-list .title {
+.progress-number {
+    font-size: 4em;
+    position: absolute;
+    /* top: 50%;
+    left: 50%; */
+}
+
+.transfer__body {
+    position: relative;
+    height: 21.125em;
     width: 100%;
-    font-size: 18px;
-    color: #555;
-    margin-bottom: 20px;
+
+
 }
 
-.fs-screen .files-list .item {
-    width: 33.33%;
-    min-width: 200px;
-    border: 1px solid #eee;
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.05);
+.uploader__files {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.fs-screen .files-list .item .progress{
-    padding: 30px;
-    text-align: center;
-    font-size: 50px;
-    font-family: monospace;
-    color: #222;
+
+.uploader__files:hover svg {
+    fill: #0073e5;
 }
-.fs-screen .files-list .item .filename{
-    font-size: 16px;
-    padding: 5px;
-    border-top: 1px solid #eee;
-}
-.progress{
-    position:relative;
-    margin:80px;
-    width:220px; height:220px;
-}
-canvas {
+
+svg {
     display: block;
-    position:absolute;
-    top:0;
-    left:0;
-}
-span {
-    color:#555;
-    display:block;
-    line-height:220px;
-    text-align:center;
-    width:220px;
-    font-family:sans-serif;
-    font-size:40px;
-    font-weight:100;
-    margin-left:5px;
+    height: 2.25em;
+    margin: 0 0.625em 0 1.25em;
+    position: absolute;
+    top: 7.125em;
+    transition: all .4s cubic-bezier(.77, 0, .175, 1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 2.25em;
 }
 
-input {
-    width: 200px;
+#file-input {
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    cursor: pointer;
+}
+
+.transfer__footer {
+    border-top: 1px solid #d4d7d9;
+    height: 4.5em;
+    padding: 0 1.25em;
+    position: relative;
+}
+
+.transfer__button {
+    background: #babcbf;
+    border-color: #babcbf;
+    cursor: default;
+
+    background: #409fff;
+    border: 1px solid #409fff;
+    border-radius: 1.25em;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+
+    font-size: 1em;
+    font-weight: 500;
+    height: 2.5em;
+    left: 50%;
+    outline: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: border-color .2s cubic-bezier(.77, 0, .175, 1), background-color .2s cubic-bezier(.77, 0, .175, 1), color .2s cubic-bezier(.77, 0, .175, 1);
+    width: 9.75em;
+    text-align: center;
+}
+
+.transfer__contents {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.illustration {
+    display: block;
+    margin: 1.875em auto 0.75em;
+
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    display: inline-block;
+    height: 10.625rem;
+    opacity: 1;
+    transition: opacity .1s ease-out;
+    width: 10.625rem;
+}
+
+.complete__text {
+    color: #484a4d;
+    font-size: .875em;
+    line-height: 1.28571em;
+    margin: 0 0 0.92857em;
+    padding: 0;
+    text-align: center;
+    white-space: pre-wrap;
+}
+
+.transfer-link {
+    position: relative;
+    transition: all .4s;
+    height: 2.625em;
+}
+
+.transfer-link__url-wrapper {
+    background-color: #fff;
+    border: 1px solid #babcbf;
+    border-radius: 5px;
+    bottom: 0;
+
+    font-weight: 500;
+    height: 2.625em;
+    min-width: 100%;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    transition: inherit;
+    white-space: nowrap;
+}
+
+.transfer-link__url {
+    border: 0;
+    color: #484a4d;
+    font-size: .875em;
+    left: 0;
+    margin: 0;
+    outline: none;
+    padding: 0 1em;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: inherit;
+    width: 100%;
+}
+
+.panel {
+    background: #fff;
+    bottom: 0;
+    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate3d(105%, 0, 0);
+    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+    z-index: 37;
+
+    width: 55em;
 }
