@@ -13,16 +13,22 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
-let link = ''
+let id = ''
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'client/index.html'));
 });
 
-app.get('/t/:link', (req, res) => {
-  console.log(req.params.link);
-  if (req.params.link === link) {
+// app.get('/reciviver', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'));
+// });
+
+app.get('/t/:id', (req, res) => {
+  console.log(req.params.id);
+
+  if (req.params.id === id) {
     res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'));
+    io.emit('metadata')
   } else {
     res.status(404).send('хуй')
   }
@@ -33,17 +39,19 @@ app.use(express.static(path.join(__dirname, '../', 'client')))
 io.on('connection', (socket) => {
   console.log(`connection ${socket.id}`);
 
-  socket.on('fs', arg => {
-    // console.log(arg)
-    socket.broadcast.emit('fs-send', arg)
+  socket.on('download', () => {
+    io.emit('send-file')
   })
 
-  socket.on('link', arg => {
+  socket.on('file-sharing', arg => {
+    socket.broadcast.emit('progress-bar')
+    socket.broadcast.emit('send-chunk', arg)
+  })
+
+  socket.on('id', arg => {
     console.log(arg)
-    link = arg
-
+    id = arg
   })
-
 
   socket.on("disconnect", () => {
     console.log('disconnect');

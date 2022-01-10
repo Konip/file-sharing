@@ -1,9 +1,13 @@
 const socket = io()
 
-
 const progress = document.getElementById('progress')
 const canvas = document.querySelector('canvas')
 const progressNumber = document.querySelector('.progress-number')
+const transfer__container = document.querySelector('.transfer__container')
+const panel = document.querySelector('.panel')
+const fileSystemTitle = document.querySelector('.file-system-entry__title')
+const fileSystemSize = document.querySelector('.file-system-entry__size')
+const fileSystemFormat = document.querySelector('.file-system-entry__format')
 
 function createDownload(fileName, type, content) {
     let blob = new Blob([content], { type: type });
@@ -14,30 +18,45 @@ function createDownload(fileName, type, content) {
     URL.revokeObjectURL(link.href);
 }
 
-let arrBuffer = []
-let sum = 0
-let percent = 0
+function progressBar(){
+    transfer__container.style.display = 'none'
+    progress.style.display = 'flex'
+}
 
-var options = {
+function download() {
+    socket.emit('download')
+    console.log('download');
+}
+
+function openPanel(){
+    console.log('aa');
+    panel.classList.add('panel--visible')
+}
+
+function addDescription(name, size, type) {
+    fileSystemTitle.innerText = name
+    fileSystemSize.innerText = formatBytes(size)
+    fileSystemFormat.innerText = name.slice(name.lastIndexOf('.') + 1)
+}
+
+const options = {
     percent: progress.getAttribute('data-percent'),
     size: 220,
     lineWidth: 15,
     rotate: 0
 }
 
-
-
 if (typeof (G_vmlCanvasManager) !== 'undefined') {
     G_vmlCanvasManager.initElement(canvas);
 }
 
-var ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d');
 canvas.width = canvas.height = options.size;
 
 ctx.translate(options.size / 2, options.size / 2); // change center
 ctx.rotate((-1 / 2 + options.rotate / 180) * Math.PI); // rotate -90 deg
 
-var radius = (options.size - options.lineWidth) / 2;
+const radius = (options.size - options.lineWidth) / 2;
 
 function drawCircle(color, lineWidth, percent) {
 
@@ -54,7 +73,12 @@ function drawCircle(color, lineWidth, percent) {
 drawCircle('#efefef', options.lineWidth, 100 / 100);
 drawCircle('#555555', options.lineWidth, options.percent / 100);
 
-socket.on('fs-send', arg => {
+
+let arrBuffer = []
+let sum = 0
+let percent = 0
+
+socket.on('send-chunk', arg => {
     // console.log(arg);
 
     const { name, type, buffer, chunkSize, size } = arg
@@ -82,3 +106,10 @@ socket.on('fs-send', arg => {
 
 })
 
+socket.on('progress-bar',()=>{
+    progressBar()
+})
+
+socket.on('metadata',()=>{
+    addDescription()
+})

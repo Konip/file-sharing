@@ -11,6 +11,7 @@
     position: absolute;
     left: 0;
     top: 0;
+    overflow: hidden;
 }
 
 .transfer {
@@ -26,6 +27,8 @@
     width: 17.5em;
     z-index: 30;
 }
+
+.transfer__container {}
 
 .panel {
     background: #fff;
@@ -51,6 +54,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    display: none;
 }
 
 #cyrcle {
@@ -60,9 +65,158 @@
     top: 50%;
     transform: translateY(-50%); */
 }
-.progress-number{
+
+.progress-number {
     font-size: 4em;
     position: absolute;
     /* top: 50%;
     left: 50%; */
+}
+
+.transfer__body {
+    height: 21.125em;
+    font-family: -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
+}
+
+.transfer__contents {
+    height: 100%;
+    /* left: 0; */
+    /* margin: 0 -17px 0 0; */
+    /* overflow-x: hidden; */
+    /* overflow-y: scroll; */
+    /* padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0; */
+}
+
+.transfer__contents h2 {
+    margin: 0 0 0.0625em;
+    padding: 0 0.90909em;
+    color: #17181a;
+
+    font-size: 1.375em;
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0 0.45455em;
+    text-align: center;
+
+}
+
+.transfer__contents p {
+    font-size: .8125em;
+    line-height: 1.38462em;
+    padding: 0 1.53846em;
+    text-align: center;
+    font-weight: 400;
+    margin: 0;
+    color: #6a6d70;
+}
+
+.file-system-entry {
+    margin: 0;
+    padding: 0.5em 1.25em;
+    border-bottom: 1px solid #e8ebed;
+    position: relative;
+    cursor: pointer;
+}
+
+.file-system-entry:hover {
+    background-color: #f7f9fa;
+}
+
+.file-system-entry__title {
+    color: #17181a;
+    display: block;
+    font-size: .975em;
+    font-weight: 400;
+    line-height: 1.42857em;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-system-entry__details {
+    color: #6a6d70;
+    display: block;
+    font-size: .85em;
+    font-weight: 400;
+    line-height: 1.16667em;
+    margin: 0;
+}
+
+.filelist__action {
+    width: 3.125em;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(90deg, hsla(0, 0%, 100%, 0), #fff 35%, #fff);
+}
+.file-system-entry:hover .filelist__action{
+
+    background: linear-gradient(90deg, rgba(247, 249, 250, 0), #f7f9fa 35%, #f7f9fa) !important;
+}
+
+.filelist__action svg {
+    height: 1.5em;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.5em;
+    right: 1.1em;
+}
+
+.file-system-entry__size::after {
+    content: "\00B7";
+    display: inline-block;
+    padding-left: 0.3em;
+    text-decoration: none;
+}
+
+.downloader__top-icon {
+    height: 8.75em;
+    width: 8.75em;
+    display: block;
+    margin: 0 auto 0.75em;
+
+    padding-top: 1.875em;
+}
+
+.transfer__footer {
+    border-top: 1px solid #d4d7d9;
+    height: 4.5em;
+    padding: 0 1.25em;
+    position: relative;
+    font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
+}
+
+.transfer__button {
+    background: #409fff;
+    border: 1px solid #409fff;
+    border-radius: 1.25em;
+
+    color: #fff;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    height: 2.5em;
+    left: 50%;
+    outline: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: border-color .2s cubic-bezier(.77, 0, .175, 1), background-color .2s cubic-bezier(.77, 0, .175, 1), color .2s cubic-bezier(.77, 0, .175, 1);
+    width: 9.75em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.transfer__button:hover {
+    background-color: #0073e5;
+    border-color: #0073e5;
 }

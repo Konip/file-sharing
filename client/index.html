@@ -6,19 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <title>qq</title>
+    <title>File Sharing</title>
 </head>
 
 <body>
     <div class="app">
         <div class="transfer">
             <div class="transfer__container">
-                <div class="progress" id="progress" data-percent="0">
+                <!-- <div class="progress" id="progress" data-percent="0">
                     <span class="progress-number">0</span>
                     <canvas id="cyrcle"></canvas>
-                </div>
+                </div> -->
                 <div class="transfer__body">
-                    <!-- <div class="uploader__files">
+
+                    <div class="uploader__files">
                         <svg viewBox="0 0 72 72">
                             <path
                                 d="M36.493 72C16.118 72 0 55.883 0 36.493 0 16.118 16.118 0 36.493 0 55.882 0 72 16.118 72 36.493 72 55.882 55.883 72 36.493 72zM34 34h-9c-.553 0-1 .452-1 1.01v1.98A1 1 0 0 0 25 38h9v9c0 .553.452 1 1.01 1h1.98A1 1 0 0 0 38 47v-9h9c.553 0 1-.452 1-1.01v-1.98A1 1 0 0 0 47 34h-9v-9c0-.553-.452-1-1.01-1h-1.98A1 1 0 0 0 34 25v9z"
@@ -27,7 +28,8 @@
                         <label for="input"></label>
                         <input type="file" id="file-input">
                         <h2>Upload files</h2>
-                    </div> -->
+                    </div>
+
                     <div class="transfer__contents">
                         <video class="illustration" autoplay loop
                             src="https://prod-cdn.wetransfer.net/packs/media/transfer_window/transfer_completed-1-95a6a127.mp4"
@@ -35,28 +37,80 @@
                         <h2>You’re done!</h2>
                         <p class="complete__text">
                             Copy your download link or
-                            <!-- <a href="">see what's inside</a> -->
+                            <a href="" onclick="openPanel(this)">see what's inside</a>
                         </p>
                         <div class="transfer-link">
                             <div class="transfer-link__url-wrapper">
-                                <input class="transfer-link__url" value="qqq" readonly>
+                                <input class="transfer-link__url" value="http://localhost:3000/t/DA3NA" readonly>
                             </div>
                         </div>
+                       
                     </div>
+
+                     <!-- This link has been copied to your clipboard -->
+
                 </div>
                 <div class="transfer__footer">
-                    <div class="transfer__button">Get a link</div>
+                    <div class="transfer__button get__link" disabled>Get a link</div>
+                    <div class="transfer__button copy__link">Copy link</div>
                 </div>
             </div>
 
         </div>
-        <div class="panel">
-
+        <div class="panel ">
+            <div class="panel__topbar">
+                <button class="panel__close" onclick="closePanel()">
+                    <svg viewBox="0 0 24 24" aria-label="Close panel">
+                        <path fill="#babcbf" fill-rule="evenodd"
+                            d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10 10-4.477 10-10zm-10-1.414L9.875 8.46c-.38-.38-1.02-.386-1.41.004-.394.394-.393 1.023-.004 1.41L10.587 12 8.46 14.125c-.38.38-.386 1.02.004 1.41.394.394 1.023.393 1.41.004L12 13.413l2.125 2.125c.38.38 1.02.386 1.41-.004.394-.394.393-1.023.004-1.41L13.413 12l2.125-2.125c.38-.38.386-1.02-.004-1.41-.394-.394-1.023-.393-1.41-.004L12 10.587zM0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div class="panel__container">
+                <div class="panel__content">
+                    <div class="details">
+                        <h1>Your transfer details</h1>
+                        <span class="metadata__container">
+                            <div class="metadata">
+                                <span>1 file</span>
+                                <span class="metadata-size"></span>
+                                <span>Expires in 1 week</span>
+                            </div>
+                        </span>
+                        <div class="details__row">
+                            <div class="details__col">
+                                <div class="displayName">
+                                    <h2 class="displayName__header">Title</h2>
+                                    <div class="displayName__body"></div>
+                                </div>
+                            </div>
+                            <div class="details__col">
+                                <div class="details__filelist">
+                                    <h2 class="details__subtitle">1 file</h2>
+                                    <ul class="filelist">
+                                        <li>
+                                            <div class="file-system-entry">
+                                                <div class="file-system-entry__title"></div>
+                                                <div class="file-system-entry__details">
+                                                    <span class="file-system-entry__size"></span>
+                                                    <span class="file-system-entry__format"></span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script type="text/javascript" src="socket.io/socket.io.js"></script>
     <script src="client.js"></script>
+    
 </body>
 
 </html>
