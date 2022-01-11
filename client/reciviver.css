@@ -30,32 +30,17 @@
 
 .transfer__container {}
 
-.panel {
-    background: #fff;
-    bottom: 0;
-    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translate3d(105%, 0, 0);
-    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
-    z-index: 37;
-
-    width: 55em;
-}
-
 .progress {
     position: relative;
     /* margin:80px; */
     width: 100%;
     height: 100%;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     display: none;
+
+    font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
 }
 
 #cyrcle {
@@ -69,8 +54,14 @@
 .progress-number {
     font-size: 4em;
     position: absolute;
-    /* top: 50%;
-    left: 50%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-number::after {
+    content: '%';
+    font-size: 0.6em;
 }
 
 .transfer__body {
@@ -156,7 +147,8 @@
     right: 0;
     background: linear-gradient(90deg, hsla(0, 0%, 100%, 0), #fff 35%, #fff);
 }
-.file-system-entry:hover .filelist__action{
+
+.file-system-entry:hover .filelist__action {
 
     background: linear-gradient(90deg, rgba(247, 249, 250, 0), #f7f9fa 35%, #f7f9fa) !important;
 }
@@ -219,4 +211,162 @@
 .transfer__button:hover {
     background-color: #0073e5;
     border-color: #0073e5;
+}
+
+.panel {
+    max-width: calc(100% - 31.25em);
+    width: 55em;
+
+    background: #fff;
+    bottom: 0;
+    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate3d(105%, 0, 0);
+    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+    z-index: 37;
+    font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
+}
+
+.panel--visible {
+    transform: none;
+    transition: all .5s cubic-bezier(.77, 0, .175, 1);
+}
+
+.panel__topbar {
+    border-bottom: 1px solid #e8ebed;
+    height: 3.75em;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 100%;
+    z-index: 37;
+}
+
+.panel__topbar:hover .panel__topbar svg {
+    color: yellow;
+}
+
+.panel__close {
+    background: 0;
+    cursor: pointer;
+    height: 1.5rem;
+    left: 1rem;
+    padding: 0;
+    position: absolute;
+    width: 1.5rem;
+
+
+    border: 0;
+    border-radius: 5px;
+    font-size: .875em;
+    font-weight: 500;
+    margin-top: 1.28571em;
+    text-decoration: none;
+    transition: border-color .2s cubic-bezier(.77, 0, .175, 1), background-color .2s cubic-bezier(.77, 0, .175, 1), color .2s cubic-bezier(.77, 0, .175, 1);
+}
+
+.panel__container {
+    height: calc(100% - 60px);
+    transform: scale(1);
+}
+
+.panel__content {
+    height: 100%;
+    padding: 2.8125em 5em 6.5625em;
+    position: relative;
+
+    background-color: #f7f9fa;
+    min-height: 100%;
+    padding-bottom: 0;
+    padding-top: 3.4375em;
+    position: relative;
+}
+
+
+.preview {
+    height: calc(100% - 180px);
+    position: absolute;
+    width: calc(100% - 160px);
+}
+
+.preview__container {
+    height: 100%;
+    width: 100%;
+}
+
+.preview__item {
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.preview__item--image {
+    height: 100%;
+    text-align: center;
+    width: 100%;
+}
+
+.preview__item--image img {
+    max-height: 100%;
+    max-width: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.preview__bar {
+    background-color: #fff;
+    border-top: 1px solid #e8ebed;
+    height: 4.375em;
+    margin: 3.4375em -5em 0;
+    padding: 0 2.5em;
+}
+
+.preview__meta {
+    float: left;
+    line-height: 1.25em;
+    width: 70%;
+}
+
+.preview__title {
+    color: #17181a;
+    font-family: -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
+    font-weight: 600;
+    margin-top: .9375em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.preview__subtitle {
+    color: #6a6d70;
+    font-family: -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
+    font-size: .75em;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.preview__bar .button {
+    float: right;
+    height: 2.85714em;
+    margin-top: .9375em;
+
+    background: #409fff;
+    color: #fff;
+    cursor: pointer;
+
+    border: 0;
+    border-radius: 5px;
+    font-size: .875em;
+    font-weight: 500;
+    padding: 0 1.28571em;
+    position: relative;
+    text-decoration: none;
+    transition: border-color .2s cubic-bezier(.77, 0, .175, 1), background-color .2s cubic-bezier(.77, 0, .175, 1), color .2s cubic-bezier(.77, 0, .175, 1);
+
 }

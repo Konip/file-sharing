@@ -19,25 +19,36 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'client/index.html'));
 });
 
-// app.get('/reciviver', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'));
-// });
-
-app.get('/t/:id', (req, res) => {
-  console.log(req.params.id);
-
-  if (req.params.id === id) {
-    res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'));
-    io.emit('metadata')
-  } else {
-    res.status(404).send('хуй')
-  }
+app.get('/reciviver', (req, res) => {
+  res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'));
 });
+
+// app.get('/t/:id', (req, res) => {
+//   console.log(req.params.id);
+
+//   if (req.params.id === id) {
+//     res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'))
+//   } else {
+//     res.status(404).send('хуй')
+//   }
+// });
 
 app.use(express.static(path.join(__dirname, '../', 'client')))
 
 io.on('connection', (socket) => {
   console.log(`connection ${socket.id}`);
+
+  socket.on('id', arg => {
+    id = arg
+  })
+
+  socket.on('page-loaded', () => {
+    socket.broadcast.emit('request-metadata')
+  })
+
+  socket.on('response-metadata', arg => {
+    socket.broadcast.emit('send-metadata', arg)
+  })
 
   socket.on('download', () => {
     io.emit('send-file')
@@ -48,10 +59,6 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('send-chunk', arg)
   })
 
-  socket.on('id', arg => {
-    console.log(arg)
-    id = arg
-  })
 
   socket.on("disconnect", () => {
     console.log('disconnect');

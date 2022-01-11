@@ -13,6 +13,7 @@ const fileSystemTitle = document.querySelector('.file-system-entry__title')
 const fileSystemSize = document.querySelector('.file-system-entry__size')
 const fileSystemFormat = document.querySelector('.file-system-entry__format')
 const metadataSize = document.querySelector('.metadata-size')
+const panel__close = document.querySelector('.panel__close')
 
 let transferLink = ''
 
@@ -46,7 +47,6 @@ function openPanel(envt) {
 
 function closePanel() {
     panel.classList.remove('panel--visible')
-    // panel.styel.display = 'none'
 }
 
 function sendId(id) {
@@ -95,6 +95,10 @@ function sendFile(file) {
     }
 }
 
+function sendMetadata(name, size, type) {
+    socket.emit('response-metadata', ({ name, size, type }))
+}
+
 function fileUpload(file) {
 
     const reader = new FileReader();
@@ -117,8 +121,8 @@ function fileUpload(file) {
             sendFile(file)
         })
 
-        socket.on('metadata', ( name, size, type ) => {
-
+        socket.on('request-metadata', () => {
+            sendMetadata(name, size, type)
         })
     }
 }
@@ -135,8 +139,6 @@ function copyLink(link) {
 
         });
 }
-
-
 
 input.addEventListener('change', () => {
 
@@ -165,3 +167,5 @@ uploader.addEventListener('drop', (event) => {
 copy__link.onclick = () => {
     copyLink(transferLink)
 }
+
+panel__close.onclick = closePanel
