@@ -149,7 +149,6 @@
 }
 
 .file-system-entry:hover .filelist__action {
-
     background: linear-gradient(90deg, rgba(247, 249, 250, 0), #f7f9fa 35%, #f7f9fa) !important;
 }
 
@@ -297,24 +296,44 @@
     width: 100%;
 }
 
+.preview__content {
+    height: inherit;
+}
+
 .preview__item {
     height: 100%;
     position: relative;
     width: 100%;
 }
 
-.preview__item--image {
+.preview__image{
     height: 100%;
-    text-align: center;
+    position: relative;
     width: 100%;
+    text-align: center;
 }
 
-.preview__item--image img {
+.preview__image img{
     max-height: 100%;
     max-width: 100%;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.preview__audio{
+    background: #fff;
+    height: 6.25em;
+    padding: 1.5625em 1.25em;
+    position: absolute;
+    width: 100%;
+
+    border: 0.0625em solid #e8ebed;
+    border-radius: 0.1875em;
+    left: 50%;
+    max-width: 23.125em;
+    top: 50%;
+    transform: translate(-50%,-50%);
 }
 
 .preview__bar {
@@ -351,7 +370,7 @@
     white-space: nowrap;
 }
 
-.preview__bar .button {
+.preview__button {
     float: right;
     height: 2.85714em;
     margin-top: .9375em;

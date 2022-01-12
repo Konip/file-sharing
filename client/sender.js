@@ -1,4 +1,5 @@
 const socket = io()
+import { formatBytes } from './utils.js'
 
 const input = document.querySelector('input[type=file]')
 const uploader = document.querySelector('.uploader__files')
@@ -17,17 +18,7 @@ const panel__close = document.querySelector('.panel__close')
 
 let transferLink = ''
 
-function formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
 
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
 
 function addDescription(name, size, type) {
     displayName__body.innerText = name
