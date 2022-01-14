@@ -17,12 +17,17 @@ const preview__item = document.querySelector('.preview__item')
 const preview__title = document.querySelector('.preview__title')
 const preview__subtitle = document.querySelector('.preview__subtitle')
 const preview__button = document.querySelector('.preview__button')
+let audio
+
 
 let arrBuffer = []
 let sum = 0
 let percent = 0
 let contentLoaded = false
 
+function sss() {
+    console.log('wwww');
+}
 
 function createDownload(fileName, type, content) {
     let blob = new Blob([content], { type: type });
@@ -62,14 +67,27 @@ function addDescription({ name, size, type }) {
 }
 
 function addSrc(name, size, buffer, element) {
+
+    // element.src = URL.createObjectURL( new Blob( [ buffer ],{type:'audio/mpeg'} ) )
     element.src = URL.createObjectURL(buffer)
-    console.log(buffer);
-    element.onload = function () {
+
+    console.log(name, size, element);
+
+    element.addEventListener('load',()=>{
+        console.log('yyyyy');
         URL.revokeObjectURL(element.src)
         deleteProgressBar()
         preview__title.innerText = name
         preview__subtitle.innerText = formatBytes(size)
-    }
+    })
+
+    // setTimeout(() => {
+    //     URL.revokeObjectURL(element.src)
+    // })
+
+    // deleteProgressBar()
+    // preview__title.innerText = name
+    // preview__subtitle.innerText = formatBytes(size)
 }
 
 function createPreview(name, type, size, buffer) {
@@ -91,22 +109,27 @@ function createPreview(name, type, size, buffer) {
             el.classList.add('preview__audio')
             preview__item.append(el)
             el.innerHTML = audioTemplate()
-            addSrc(name, size, buffer, el)
 
+            let audioPlayer = document.querySelector('.audio-player')
+            let audio = document.createElement('audio')
+            audioPlayer.append(audio)
+            // audio = document.querySelector('audio')
+            addSrc(name, size, buffer, audio)
+
+            console.log('audio');
+            break
+        }
+        case 'text/plain"': {
+
+            let vid = document.createElement('video')
+            addSrc(name, size, buffer, vid)
 
             break
         }
-    }
+        case 'image/png': case 'image/jpeg': case 'image/gif': {
 
-    // img.src = URL.createObjectURL(buffer)
-    // console.log(buffer);
-    // img.onload = function () {
-    //     URL.revokeObjectURL(img.src)
-    //     progress.style.display = 'none'
-    //     transfer__container.style.display = 'block'
-    //     preview__title.innerText = name
-    //     preview__subtitle.innerText = formatBytes(size)
-    // }
+        }
+    }
 }
 
 

@@ -71,8 +71,8 @@ function sendFile(file) {
 
     while (numberofChunks--) {
         console.log(file);
-
-        let chunk = new Blob([file]).slice(chunkCounter, chunkCounter + chunkSize)
+console.log(type);
+        let chunk = new Blob([file], { type: type }).slice(chunkCounter, chunkCounter + chunkSize)
 
         socket.emit('file-sharing', {
             name,
