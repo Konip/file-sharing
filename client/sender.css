@@ -74,15 +74,23 @@ ul {
     position: relative;
     height: 21.125em;
     width: 100%;
-
-
 }
 
 .uploader__files {
     height: 100%;
+    padding: 20px;
+}
+
+.uploader__files-content {
+    position: relative;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 2px dashed;
+    border-color: #d9dcde;
+    border-radius: 12px;
+    transition: .2s;
 }
 
 .uploader__files:hover svg {
@@ -92,15 +100,15 @@ ul {
 .uploader__files svg {
     display: block;
     height: 2.25em;
-    margin: 0 0.625em 0 1.25em;
     position: absolute;
-    top: 7.125em;
+    top: 5.8em;
     transition: all .4s cubic-bezier(.77, 0, .175, 1);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     width: 2.25em;
+    fill: #409fff;
 }
 
 #file-input {
@@ -267,10 +275,6 @@ ul {
     z-index: 37;
 }
 
-.panel__topbar:hover .panel__topbar svg {
-    color: yellow;
-}
-
 .panel__close {
     background: 0;
     cursor: pointer;
@@ -288,6 +292,14 @@ ul {
     margin-top: 1.28571em;
     text-decoration: none;
     transition: border-color .2s cubic-bezier(.77, 0, .175, 1), background-color .2s cubic-bezier(.77, 0, .175, 1), color .2s cubic-bezier(.77, 0, .175, 1);
+}
+
+.panel__close svg {
+    fill: #babcbf;
+}
+
+.panel__close svg:hover {
+    fill: #6a6d70;
 }
 
 .panel__container {

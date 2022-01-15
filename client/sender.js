@@ -3,6 +3,7 @@ import { formatBytes } from './utils.js'
 
 const input = document.querySelector('input[type=file]')
 const uploader = document.querySelector('.uploader__files')
+const uploaderСontent = document.querySelector('.uploader__files-content')
 const transfer = document.querySelector('.transfer__contents')
 const url = document.querySelector('.transfer-link__url')
 // const transfer__button = document.querySelector('.transfer__button')
@@ -17,8 +18,6 @@ const metadataSize = document.querySelector('.metadata-size')
 const panel__close = document.querySelector('.panel__close')
 
 let transferLink = ''
-
-
 
 function addDescription(name, size, type) {
     displayName__body.innerText = name
@@ -71,7 +70,7 @@ function sendFile(file) {
 
     while (numberofChunks--) {
         console.log(file);
-console.log(type);
+        console.log(type);
         let chunk = new Blob([file], { type: type }).slice(chunkCounter, chunkCounter + chunkSize)
 
         socket.emit('file-sharing', {
@@ -139,16 +138,15 @@ input.addEventListener('change', () => {
 });
 
 uploader.addEventListener('dragover', () => {
-    console.log('drag');
+    uploaderСontent.style.borderColor = '#409fff'
 })
 
 uploader.addEventListener('dragleave', () => {
-    console.log('leave');
+    uploaderСontent.style.borderColor = '#d9dcde'
 })
 
 uploader.addEventListener('drop', (event) => {
     event.preventDefault()
-    console.log('drop');
 
     let file = event.dataTransfer.files[0]
 

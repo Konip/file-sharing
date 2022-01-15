@@ -1,8 +1,8 @@
-export function audioTemplate(src) {
+export function audioTemplate() {
     return `<div class="preview__audio-player">
     <div class="audio-player">
-
-        <div class="audio-player__controls" onclick="sss()">
+    <audio src=""></audio>
+        <div class="audio-player__controls">
             <div class="audio-player__playpause">
             <svg width="30px" height="30px" viewBox="0 0 30 30">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -24,12 +24,12 @@ export function audioTemplate(src) {
             <div class="audio-player__slider">
                 <div class="audio-player__slider--background">
                     <div class="audio-player__slider--buffer" style="width: 1.89826%;"></div>
-                    <div class="audio-player__slider--progress">
+                    <div class="audio-player__slider--progress" style="width: 0%;">
                         <div class="audio-player__slider--pin"></div>
                     </div>
                 </div>
             </div>
-            <div class="audio-player__time audio-player__time--right">3:05 </div>
+            <div class="audio-player__time audio-player__time--right"></div>
         </div>
     </div>
 </div>`

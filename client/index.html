@@ -20,14 +20,17 @@
                 <div class="transfer__body">
 
                     <div class="uploader__files">
-                        <svg viewBox="0 0 72 72">
-                            <path
-                                d="M36.493 72C16.118 72 0 55.883 0 36.493 0 16.118 16.118 0 36.493 0 55.882 0 72 16.118 72 36.493 72 55.882 55.883 72 36.493 72zM34 34h-9c-.553 0-1 .452-1 1.01v1.98A1 1 0 0 0 25 38h9v9c0 .553.452 1 1.01 1h1.98A1 1 0 0 0 38 47v-9h9c.553 0 1-.452 1-1.01v-1.98A1 1 0 0 0 47 34h-9v-9c0-.553-.452-1-1.01-1h-1.98A1 1 0 0 0 34 25v9z"
-                                fill="#409fff" fill-rule="nonzero"></path>
-                        </svg>
-                        <label for="input"></label>
-                        <input type="file" id="file-input">
-                        <h2>Upload files</h2>
+                        <div class="uploader__files-content">
+                            <svg viewBox="0 0 72 72">
+                                <path
+                                    d="M36.493 72C16.118 72 0 55.883 0 36.493 0 16.118 16.118 0 36.493 0 55.882 0 72 16.118 72 36.493 72 55.882 55.883 72 36.493 72zM34 34h-9c-.553 0-1 .452-1 1.01v1.98A1 1 0 0 0 25 38h9v9c0 .553.452 1 1.01 1h1.98A1 1 0 0 0 38 47v-9h9c.553 0 1-.452 1-1.01v-1.98A1 1 0 0 0 47 34h-9v-9c0-.553-.452-1-1.01-1h-1.98A1 1 0 0 0 34 25v9z"
+                                    fill="current" fill-rule="nonzero"></path>
+                            </svg>
+                            <label for="input"></label>
+                            <input type="file" id="file-input">
+                            <h2>Upload files</h2>
+                        </div>
+                        
                     </div>
 
                     <div class="transfer__contents">
@@ -61,7 +64,7 @@
             <div class="panel__topbar">
                 <button class="panel__close">
                     <svg viewBox="0 0 24 24" aria-label="Close panel">
-                        <path fill="#babcbf" fill-rule="evenodd"
+                        <path fill="current" fill-rule="evenodd"
                             d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10 10-4.477 10-10zm-10-1.414L9.875 8.46c-.38-.38-1.02-.386-1.41.004-.394.394-.393 1.023-.004 1.41L10.587 12 8.46 14.125c-.38.38-.386 1.02.004 1.41.394.394 1.023.393 1.41.004L12 13.413l2.125 2.125c.38.38 1.02.386 1.41-.004.394-.394.393-1.023.004-1.41L13.413 12l2.125-2.125c.38-.38.386-1.02-.004-1.41-.394-.394-1.023-.393-1.41-.004L12 10.587zM0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12z">
                         </path>
                     </svg>

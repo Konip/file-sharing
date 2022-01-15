@@ -1,7 +1,7 @@
 const socket = io()
 import { drawCircle, options } from './progressBar.js'
 import { audioTemplate } from './template.js'
-import { formatBytes } from './utils.js'
+import { changeSVG, formatBytes, formatTime } from './utils.js'
 
 const progress = document.getElementById('progress')
 const progressNumber = document.querySelector('.progress-number')
@@ -17,16 +17,37 @@ const preview__item = document.querySelector('.preview__item')
 const preview__title = document.querySelector('.preview__title')
 const preview__subtitle = document.querySelector('.preview__subtitle')
 const preview__button = document.querySelector('.preview__button')
-let audio
 
+let audioProgress
+let audio
+let timeTrack
 
 let arrBuffer = []
 let sum = 0
 let percent = 0
 let contentLoaded = false
+let play = false
 
-function sss() {
-    console.log('wwww');
+function seek(e) {
+    console.log('yyyy');
+
+    var percent = e.offsetX / this.offsetWidth;
+    console.log(percent);
+    audio.currentTime = percent * audio.duration;
+    e.target.value = Math.floor(percent / 100);
+    e.target.innerHTML = progressBar.value + '% played';
+
+}
+
+function playPause() {
+
+    if (play) {
+        audio.pause()
+    } else {
+        audio.play()
+    }
+    changeSVG(play)
+    play = !play
 }
 
 function createDownload(fileName, type, content) {
@@ -38,9 +59,22 @@ function createDownload(fileName, type, content) {
     URL.revokeObjectURL(link.href);
 }
 
-function addProgressBar() {
+function updateTimeTrack(time) {
+    timeTrack.innerText = formatTime(time)
+}
+
+function addLoadingProgressBar() {
     transfer__container.style.display = 'none'
     progress.style.display = 'flex'
+}
+
+function updateProgressBarAudio() {
+
+    let percentage = (100 / audio.duration) * audio.currentTime
+
+    audioProgress.style.width = percentage + '%';
+    // console.log(audio.currentTime);
+    updateTimeTrack(audio.currentTime)
 }
 
 function deleteProgressBar() {
@@ -68,26 +102,30 @@ function addDescription({ name, size, type }) {
 
 function addSrc(name, size, buffer, element) {
 
-    // element.src = URL.createObjectURL( new Blob( [ buffer ],{type:'audio/mpeg'} ) )
     element.src = URL.createObjectURL(buffer)
+    timeTrack = document.querySelector('.audio-player__time--right')
 
     console.log(name, size, element);
 
-    element.addEventListener('load',()=>{
-        console.log('yyyyy');
-        URL.revokeObjectURL(element.src)
-        deleteProgressBar()
-        preview__title.innerText = name
-        preview__subtitle.innerText = formatBytes(size)
-    })
-
     // setTimeout(() => {
-    //     URL.revokeObjectURL(element.src)
+    //     // URL.revokeObjectURL(element.src)
     // })
 
-    // deleteProgressBar()
-    // preview__title.innerText = name
-    // preview__subtitle.innerText = formatBytes(size)
+    element.onloadedmetadata = function () {
+        timeTrack.innerText = (element.duration / 60).toFixed(2)
+    }
+
+    element.addEventListener('load', () => {
+        setTimeout(() => {
+            deleteProgressBar()
+            preview__title.innerText = name
+            preview__subtitle.innerText = formatBytes(size)
+        })
+    })
+
+  
+
+
 }
 
 function createPreview(name, type, size, buffer) {
@@ -110,13 +148,18 @@ function createPreview(name, type, size, buffer) {
             preview__item.append(el)
             el.innerHTML = audioTemplate()
 
-            let audioPlayer = document.querySelector('.audio-player')
-            let audio = document.createElement('audio')
-            audioPlayer.append(audio)
-            // audio = document.querySelector('audio')
+            let audioPlayerControls = document.querySelector('.audio-player__controls')
+            let pin = document.querySelector('.audio-player__slider--pin')
+            audioProgress = document.querySelector('.audio-player__slider--progress')
+
+            audio = document.querySelector('audio')
+
             addSrc(name, size, buffer, audio)
 
-            console.log('audio');
+            audioPlayerControls.onclick = playPause
+            audio.ontimeupdate = updateProgressBarAudio
+            audioProgress.onclick = seek
+            pin.o
             break
         }
         case 'text/plain"': {
@@ -132,8 +175,6 @@ function createPreview(name, type, size, buffer) {
     }
 }
 
-
-
 function receivingFiles({ name, type, buffer, chunkSize, size }) {
 
     sum += chunkSize
@@ -141,7 +182,7 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
 
     if (p > percent && p <= 100) {
         percent = p
-        console.log(p);
+        // console.log(p);
 
         progressNumber.innerText = `${percent}`
         drawCircle('#efefef', options.lineWidth, 100 / 100);
@@ -167,7 +208,6 @@ filelist__action.onclick = () => {
     }
     openPanel()
 }
-
 transfer__button.onclick = download
 preview__button.onclick = download
 panel__close.onclick = closePanel
@@ -179,7 +219,7 @@ socket.on('send-chunk', arg => {
 })
 
 socket.on('progress-bar', () => {
-    addProgressBar()
+    addLoadingProgressBar()
 })
 
 socket.on('send-metadata', (arg) => {

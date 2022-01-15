@@ -13,3 +13,28 @@ export function formatBytes(bytes, decimals = 2) {
 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+export function changeSVG(play) {
+
+    let svg = document.querySelector('.audio-player__playpause svg path')
+
+    if (play) {
+        svg.setAttribute('d', "M12,10.8685171 L12,19.1314829 L12,19.1314829 C12,19.6837677 12.4477153,20.1314829 13,20.1314829 C13.197425,20.1314829 13.3904327,20.0730449 13.5547002,19.9635332 L19.7519246,15.8320503 L19.7519246,15.8320503 C20.2114532,15.5256978 20.3356271,14.9048285 20.0292747,14.4452998 C19.9560398,14.3354475 19.8617768,14.2411846 19.7519246,14.1679497 L13.5547002,10.0364668 L13.5547002,10.0364668 C13.0951715,9.73011434 12.4743022,9.85428821 12.1679497,10.3138169 C12.058438,10.4780844 12,10.6710921 12,10.8685171 Z")
+    } else {
+        svg.setAttribute('d', "M10 10.496C10 9.67 10.666 9 11.5 9c.828 0 1.5.68 1.5 1.496v9.008C13 20.33 12.334 21 11.5 21c-.828 0-1.5-.68-1.5-1.496v-9.008zm7 0C17 9.67 17.666 9 18.5 9c.828 0 1.5.68 1.5 1.496v9.008C20 20.33 19.334 21 18.5 21c-.828 0-1.5-.68-1.5-1.496v-9.008z")
+    }
+}
+
+export function formatTime(time) {
+    let minutes = parseInt(time / 60, 10);
+    let seconds = parseInt(time % 60);
+
+    // if (minutes < 10) {
+    //     minutes += "0";
+    // }
+
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return minutes + ':' + seconds
+}
