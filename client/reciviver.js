@@ -25,22 +25,10 @@ let timeTrack
 let arrBuffer = []
 let sum = 0
 let percent = 0
-let contentLoaded = false
 let play = false
-
-function seek(e) {
-    console.log('yyyy');
-
-    var percent = e.offsetX / this.offsetWidth;
-    console.log(percent);
-    audio.currentTime = percent * audio.duration;
-    e.target.value = Math.floor(percent / 100);
-    e.target.innerHTML = progressBar.value + '% played';
-
-}
+let fileDownloaded = false
 
 function playPause() {
-
     if (play) {
         audio.pause()
     } else {
@@ -73,6 +61,7 @@ function updateProgressBarAudio() {
     let percentage = (100 / audio.duration) * audio.currentTime
 
     audioProgress.style.width = percentage + '%';
+    // audioProgress.style.left = percentage + '%';
     // console.log(audio.currentTime);
     updateTimeTrack(audio.currentTime)
 }
@@ -100,31 +89,24 @@ function addDescription({ name, size, type }) {
     fileSystemFormat.innerText = name.slice(name.lastIndexOf('.') + 1)
 }
 
-function addSrc(name, size, buffer, element) {
+function addSrc(name, size, buffer, element,evnt) {
 
     element.src = URL.createObjectURL(buffer)
     timeTrack = document.querySelector('.audio-player__time--right')
 
     console.log(name, size, element);
 
-    // setTimeout(() => {
-    //     // URL.revokeObjectURL(element.src)
-    // })
-
     element.onloadedmetadata = function () {
         timeTrack.innerText = (element.duration / 60).toFixed(2)
     }
 
-    element.addEventListener('load', () => {
-        setTimeout(() => {
-            deleteProgressBar()
-            preview__title.innerText = name
-            preview__subtitle.innerText = formatBytes(size)
-        })
+    element.addEventListener( evnt, () => {
+        deleteProgressBar()
+        preview__title.innerText = name
+        preview__subtitle.innerText = formatBytes(size)
+        // URL.revokeObjectURL(element.src)
+        openPanel()
     })
-
-  
-
 
 }
 
@@ -138,7 +120,7 @@ function createPreview(name, type, size, buffer) {
             preview__item.append(el)
             let img = document.createElement('img')
             el.append(img)
-            addSrc(name, size, buffer, img)
+            addSrc(name, size, buffer, img,'load')
             break
         }
         case 'audio/mp4': case 'audio/mpeg': {
@@ -150,16 +132,63 @@ function createPreview(name, type, size, buffer) {
 
             let audioPlayerControls = document.querySelector('.audio-player__controls')
             let pin = document.querySelector('.audio-player__slider--pin')
+            let slider = document.querySelector('.audio-player__slider')
+            // let slider = document.querySelector('.audio-player__controls--slider')
             audioProgress = document.querySelector('.audio-player__slider--progress')
+
+
 
             audio = document.querySelector('audio')
 
-            addSrc(name, size, buffer, audio)
+            addSrc(name, size, buffer, audio,'loadeddata')
 
             audioPlayerControls.onclick = playPause
             audio.ontimeupdate = updateProgressBarAudio
-            audioProgress.onclick = seek
-            pin.o
+
+
+            slider.onmousedown = function (event) {
+
+                event.preventDefault();
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+
+                let shiftX = event.clientX - pin.getBoundingClientRect().left;
+
+                function onMouseMove(event) {
+
+
+                    let newLeft = event.clientX - shiftX - slider.getBoundingClientRect().left;
+
+                    // курсор вышел из слайдера => оставить бегунок в его границах.
+                    if (newLeft < 0) {
+                        newLeft = 0;
+                    }
+                    // let rightEdge = slider.offsetWidth - pin.offsetWidth;
+                    let rightEdge = slider.offsetWidth
+                    if (newLeft > rightEdge) {
+                        newLeft = rightEdge;
+                    }
+
+                    let percentage = (100 / rightEdge) * newLeft
+
+                    console.log('newLeft', newLeft, 'rightEdge', rightEdge);
+                    console.log(percentage);
+                    // audioProgress.style.left = percentage + '%';
+                    audioProgress.style.width = percentage + '%';
+
+                    audio.currentTime = (audio.duration * percentage) / 100
+
+                    // console.log(audio.currentTime);
+                    updateTimeTrack(audio.currentTime)
+                }
+
+                function onMouseUp() {
+                    document.removeEventListener('mouseup', onMouseUp);
+                    document.removeEventListener('mousemove', onMouseMove);
+                } 
+            }
+
             break
         }
         case 'text/plain"': {
@@ -169,7 +198,7 @@ function createPreview(name, type, size, buffer) {
 
             break
         }
-        case 'image/png': case 'image/jpeg': case 'image/gif': {
+        case 'video/mp4': {
 
         }
     }
@@ -194,7 +223,7 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
     if (chunkSize > buffer.byteLength) {
         createPreview(name, type, size, new Blob(arrBuffer.flat()))
         // createDownload(name, type, new Blob(arrBuffer.flat()))
-        contentLoaded = true
+        fileDownloaded = true
     }
 }
 
@@ -203,10 +232,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 });
 
 filelist__action.onclick = () => {
-    if (!contentLoaded) {
+    if (!fileDownloaded) {
         download()
     }
-    openPanel()
 }
 transfer__button.onclick = download
 preview__button.onclick = download
@@ -214,7 +242,6 @@ panel__close.onclick = closePanel
 
 
 socket.on('send-chunk', arg => {
-    // console.log(arg);
     receivingFiles(arg)
 })
 

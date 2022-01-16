@@ -23,8 +23,8 @@ export function audioTemplate() {
         <div class="audio-player__controls audio-player__controls--slider">
             <div class="audio-player__slider">
                 <div class="audio-player__slider--background">
-                    <div class="audio-player__slider--buffer" style="width: 1.89826%;"></div>
-                    <div class="audio-player__slider--progress" style="width: 0%;">
+                    <div class="audio-player__slider--buffer" style="width: 0%;"></div>
+                    <div class="audio-player__slider--progress">
                         <div class="audio-player__slider--pin"></div>
                     </div>
                 </div>
