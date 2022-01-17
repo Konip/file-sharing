@@ -419,31 +419,16 @@
     width: 100%;
 }
 
-.audio-player__slider--buffer, .audio-player__slider--progress {
+ .audio-player__slider--progress {
     border-radius: inherit;
     height: 100%;
     pointer-events: none;
     position: absolute;
     transition: width .5s;
     width: 0;
-}
-
-.audio-player__slider--buffer {
-    background-color: #babcbf;
-}
-
-.audio-player__slider--progress {
     background-color: #409fff;
 }
 
-.audio-player__slider--buffer, .audio-player__slider--progress {
-    border-radius: inherit;
-    height: 100%;
-    pointer-events: none;
-    position: absolute;
-    transition: width .5s;
-    width: 0;
-}
 
 .audio-player__slider--pin {
     background-color: #409fff;

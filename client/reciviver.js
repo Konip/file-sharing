@@ -1,6 +1,6 @@
 const socket = io()
 import { drawCircle, options } from './progressBar.js'
-import { audioTemplate } from './template.js'
+import { audioTemplate, textTemplate } from './template.js'
 import { changeSVG, formatBytes, formatTime } from './utils.js'
 
 const progress = document.getElementById('progress')
@@ -61,8 +61,7 @@ function updateProgressBarAudio() {
     let percentage = (100 / audio.duration) * audio.currentTime
 
     audioProgress.style.width = percentage + '%';
-    // audioProgress.style.left = percentage + '%';
-    // console.log(audio.currentTime);
+
     updateTimeTrack(audio.currentTime)
 }
 
@@ -89,7 +88,7 @@ function addDescription({ name, size, type }) {
     fileSystemFormat.innerText = name.slice(name.lastIndexOf('.') + 1)
 }
 
-function addSrc(name, size, buffer, element,evnt) {
+function addSrc(name, size, buffer, element, evnt) {
 
     element.src = URL.createObjectURL(buffer)
     timeTrack = document.querySelector('.audio-player__time--right')
@@ -100,106 +99,114 @@ function addSrc(name, size, buffer, element,evnt) {
         timeTrack.innerText = (element.duration / 60).toFixed(2)
     }
 
-    element.addEventListener( evnt, () => {
+    // element.addEventListener(evnt, () => {
         deleteProgressBar()
         preview__title.innerText = name
         preview__subtitle.innerText = formatBytes(size)
         // URL.revokeObjectURL(element.src)
         openPanel()
-    })
+    // })
 
+}
+
+function createPreviewImage(name, size, buffer) {
+    let el = document.createElement('div')
+    el.classList.add('preview__image')
+    preview__item.append(el)
+    let img = document.createElement('img')
+    el.append(img)
+    addSrc(name, size, buffer, img, 'load')
+}
+
+function createPreviewAudio(name, size, buffer) {
+    let el = document.createElement('div')
+    el.classList.add('preview__audio')
+    preview__item.append(el)
+    el.innerHTML = audioTemplate()
+
+    let audioPlayerControls = document.querySelector('.audio-player__controls')
+    let pin = document.querySelector('.audio-player__slider--pin')
+    let slider = document.querySelector('.audio-player__slider')
+    audioProgress = document.querySelector('.audio-player__slider--progress')
+
+    audio = document.querySelector('audio')
+
+    addSrc(name, size, buffer, audio, 'loadeddata')
+
+    audioPlayerControls.onclick = playPause
+    audio.onended = playPause
+    audio.ontimeupdate = updateProgressBarAudio
+
+
+    slider.onmousedown = function (event) {
+
+        event.preventDefault();
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+
+        let shiftX = event.clientX - pin.getBoundingClientRect().left;
+
+        function onMouseMove(event) {
+
+            let newLeft = event.clientX - shiftX - slider.getBoundingClientRect().left;
+
+            if (newLeft < 0) {
+                newLeft = 0;
+            }
+            // let rightEdge = slider.offsetWidth - pin.offsetWidth;
+            let rightEdge = slider.offsetWidth
+            if (newLeft > rightEdge) {
+                newLeft = rightEdge;
+            }
+
+            let percentage = ((100 / rightEdge) * newLeft).toFixed(2)
+
+            audioProgress.style.width = percentage + '%';
+            audioProgress.style.transition = 'none'
+
+            audio.currentTime = (audio.duration * percentage) / 100
+
+            updateTimeTrack(audio.currentTime)
+        }
+
+        function onMouseUp() {
+            document.removeEventListener('mouseup', onMouseUp);
+            document.removeEventListener('mousemove', onMouseMove);
+        }
+    }
+}
+
+function createPreviewText(name, size, buffer) {
+    let el = document.createElement('div')
+    el.classList.add('preview__text')
+    preview__item.append(el)
+    el.innerHTML = textTemplate()
+    let txt = document.querySelector('iframe')
+
+        addSrc(name, size, buffer, txt, 'load')
 }
 
 function createPreview(name, type, size, buffer) {
 
     switch (type) {
         case 'image/png': case 'image/jpeg': case 'image/gif': {
-
-            let el = document.createElement('div')
-            el.classList.add('preview__image')
-            preview__item.append(el)
-            let img = document.createElement('img')
-            el.append(img)
-            addSrc(name, size, buffer, img,'load')
+            createPreviewImage(name, size, buffer)
             break
         }
         case 'audio/mp4': case 'audio/mpeg': {
-
-            let el = document.createElement('div')
-            el.classList.add('preview__audio')
-            preview__item.append(el)
-            el.innerHTML = audioTemplate()
-
-            let audioPlayerControls = document.querySelector('.audio-player__controls')
-            let pin = document.querySelector('.audio-player__slider--pin')
-            let slider = document.querySelector('.audio-player__slider')
-            // let slider = document.querySelector('.audio-player__controls--slider')
-            audioProgress = document.querySelector('.audio-player__slider--progress')
-
-
-
-            audio = document.querySelector('audio')
-
-            addSrc(name, size, buffer, audio,'loadeddata')
-
-            audioPlayerControls.onclick = playPause
-            audio.ontimeupdate = updateProgressBarAudio
-
-
-            slider.onmousedown = function (event) {
-
-                event.preventDefault();
-
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-
-                let shiftX = event.clientX - pin.getBoundingClientRect().left;
-
-                function onMouseMove(event) {
-
-
-                    let newLeft = event.clientX - shiftX - slider.getBoundingClientRect().left;
-
-                    // курсор вышел из слайдера => оставить бегунок в его границах.
-                    if (newLeft < 0) {
-                        newLeft = 0;
-                    }
-                    // let rightEdge = slider.offsetWidth - pin.offsetWidth;
-                    let rightEdge = slider.offsetWidth
-                    if (newLeft > rightEdge) {
-                        newLeft = rightEdge;
-                    }
-
-                    let percentage = (100 / rightEdge) * newLeft
-
-                    console.log('newLeft', newLeft, 'rightEdge', rightEdge);
-                    console.log(percentage);
-                    // audioProgress.style.left = percentage + '%';
-                    audioProgress.style.width = percentage + '%';
-
-                    audio.currentTime = (audio.duration * percentage) / 100
-
-                    // console.log(audio.currentTime);
-                    updateTimeTrack(audio.currentTime)
-                }
-
-                function onMouseUp() {
-                    document.removeEventListener('mouseup', onMouseUp);
-                    document.removeEventListener('mousemove', onMouseMove);
-                } 
-            }
-
+            createPreviewAudio(name, size, buffer)
             break
         }
-        case 'text/plain"': {
-
-            let vid = document.createElement('video')
-            addSrc(name, size, buffer, vid)
-
+        case 'text/plain': case 'application/pdf': {
+            createPreviewText(name, size, buffer)
+            console.log('text');
             break
         }
         case 'video/mp4': {
-
+            let vid = document.createElement('video')
+            addSrc(name, size, buffer, vid)
+            break
         }
     }
 }
@@ -227,9 +234,7 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function (event) {
-    socket.emit('page-loaded')
-});
+document.addEventListener("DOMContentLoaded", socket.emit('page-loaded'));
 
 filelist__action.onclick = () => {
     if (!fileDownloaded) {

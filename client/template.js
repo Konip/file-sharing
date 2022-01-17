@@ -23,9 +23,8 @@ export function audioTemplate() {
         <div class="audio-player__controls audio-player__controls--slider">
             <div class="audio-player__slider">
                 <div class="audio-player__slider--background">
-                    <div class="audio-player__slider--buffer" style="width: 0%;"></div>
                     <div class="audio-player__slider--progress">
-                        <div class="audio-player__slider--pin"></div>
+                                          <div class="audio-player__slider--pin"></div>
                     </div>
                 </div>
             </div>
@@ -33,4 +32,8 @@ export function audioTemplate() {
         </div>
     </div>
 </div>`
+}
+
+export function textTemplate() {
+return `<iframe id="viewer" frameborder="0" scrolling="no" width="300" height="200"></iframe>`
 }
