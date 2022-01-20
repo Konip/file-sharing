@@ -43,14 +43,6 @@
     font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
 }
 
-#cyrcle {
-    /* margin: 0 auto;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%); */
-}
-
 .progress-number {
     font-size: 4em;
     position: absolute;
