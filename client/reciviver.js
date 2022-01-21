@@ -1,6 +1,6 @@
 const socket = io()
 import { drawCircle, options } from './progressBar.js'
-import { audioTemplate, textTemplate } from './template.js'
+import { audioTemplate, textTemplate, videoTemplate } from './template.js'
 import { changeSVG, formatBytes, formatTime } from './utils.js'
 
 const progress = document.getElementById('progress')
@@ -89,23 +89,22 @@ function addDescription({ name, size, type }) {
 }
 
 function addSrc(name, size, buffer, element, evnt) {
-
+    console.log(name, size, element);
     element.src = URL.createObjectURL(buffer)
+
     timeTrack = document.querySelector('.audio-player__time--right')
 
-    console.log(name, size, element);
-
-    element.onloadedmetadata = function () {
-        timeTrack.innerText = (element.duration / 60).toFixed(2)
-    }
-
-    // element.addEventListener(evnt, () => {
+    element.addEventListener(evnt, () => {
         deleteProgressBar()
         preview__title.innerText = name
         preview__subtitle.innerText = formatBytes(size)
+
+        if (timeTrack) {
+            timeTrack.innerText = (element.duration / 60).toFixed(2)
+        }
         // URL.revokeObjectURL(element.src)
         openPanel()
-    // })
+    })
 
 }
 
@@ -119,10 +118,8 @@ function createPreviewImage(name, size, buffer) {
 }
 
 function createPreviewAudio(name, size, buffer) {
-    let el = document.createElement('div')
-    el.classList.add('preview__audio')
-    preview__item.append(el)
-    el.innerHTML = audioTemplate()
+
+    preview__item.innerHTML = audioTemplate()
 
     let audioPlayerControls = document.querySelector('.audio-player__controls')
     let pin = document.querySelector('.audio-player__slider--pin')
@@ -184,7 +181,16 @@ function createPreviewText(name, size, buffer) {
     el.innerHTML = textTemplate()
     let txt = document.querySelector('iframe')
 
-        addSrc(name, size, buffer, txt, 'load')
+    addSrc(name, size, buffer, txt, 'load')
+}
+
+function createPreviewVideo(name, size, buffer) {
+
+    preview__item.innerHTML = videoTemplate()
+
+    let video = document.querySelector('video')
+
+    addSrc(name, size, buffer, video, 'loadeddata')
 }
 
 function createPreview(name, type, size, buffer) {
@@ -204,8 +210,7 @@ function createPreview(name, type, size, buffer) {
             break
         }
         case 'video/mp4': {
-            let vid = document.createElement('video')
-            addSrc(name, size, buffer, vid)
+            createPreviewVideo(name, size, buffer)
             break
         }
     }

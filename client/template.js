@@ -1,5 +1,6 @@
 export function audioTemplate() {
-    return `<div class="preview__audio-player">
+    return `<div class="preview__audio">
+    <div class="preview__audio-player">
     <div class="audio-player">
     <audio src=""></audio>
         <div class="audio-player__controls">
@@ -31,9 +32,16 @@ export function audioTemplate() {
             <div class="audio-player__time audio-player__time--right"></div>
         </div>
     </div>
+ </div>
 </div>`
 }
 
 export function textTemplate() {
-return `<iframe id="viewer" frameborder="0" scrolling="no" width="300" height="200"></iframe>`
+    return `<iframe id="viewer" frameborder="0" scrolling="no" width="300" height="200"></iframe>`
+}
+
+export function videoTemplate() {
+    return `<div class="preview__video">
+    <video src="" controls=""></video>
+    </div>`
 }
