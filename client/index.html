@@ -13,10 +13,6 @@
     <div class="app">
         <div class="transfer">
             <div class="transfer__container">
-                <!-- <div class="progress" id="progress" data-percent="0">
-                    <span class="progress-number">0</span>
-                    <canvas id="cyrcle"></canvas>
-                </div> -->
                 <div class="transfer__body">
 
                     <div class="uploader__files">
@@ -30,17 +26,19 @@
                             <input type="file" id="file-input">
                             <h2>Upload files</h2>
                         </div>
-                        
+
                     </div>
 
                     <div class="transfer__contents">
-                        <video class="illustration" autoplay loop
-                            src="https://prod-cdn.wetransfer.net/packs/media/transfer_window/transfer_completed-1-95a6a127.mp4"
-                            type="video/mp4" preload="auto"></video>
+                        <lottie-player class="illustration"
+                            src="https://assets3.lottiefiles.com/packages/lf20_sk5h1kfn.json" background="transparent"
+                            speed="1" style="width: 170px; height: 170px;" loop autoplay>
+                        </lottie-player>
+
                         <h2>You’re done!</h2>
                         <p class="complete__text">
                             Copy your download link or
-                            <a href="" onclick="openPanel(this)">see what's inside</a>
+                            <a href="" onclick="openClose()">see what's inside</a>
                         </p>
                         <div class="transfer-link">
                             <div class="transfer-link__url-wrapper">
@@ -50,15 +48,15 @@
 
                     </div>
 
-                    <!-- This link has been copied to your clipboard -->
-
                 </div>
                 <div class="transfer__footer">
                     <div class="transfer__button get__link" disabled>Get a link</div>
                     <div class="transfer__button copy__link">Copy link</div>
                 </div>
             </div>
-
+            <div class="transfer__tooltip">
+                <p>This link has been copied to your clipboard</p>
+            </div>
         </div>
         <div class="panel ">
             <div class="panel__topbar">
@@ -113,6 +111,7 @@
 
     <script type="text/javascript" src="socket.io/socket.io.js"></script>
     <script type="module" src="sender.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </body>
 
 </html>

@@ -16,8 +16,17 @@ const fileSystemSize = document.querySelector('.file-system-entry__size')
 const fileSystemFormat = document.querySelector('.file-system-entry__format')
 const metadataSize = document.querySelector('.metadata-size')
 const panel__close = document.querySelector('.panel__close')
+const complete__text = document.querySelector('.complete__text a')
+const transfer__tooltip = document.querySelector('.transfer__tooltip')
 
 let transferLink = ''
+
+function showTooltip() {
+    transfer__tooltip.style.opacity = 1
+    setTimeout(() => {
+        transfer__tooltip.style.opacity = 0
+    }, 5000)
+}
 
 function addDescription(name, size, type) {
     displayName__body.innerText = name
@@ -37,6 +46,15 @@ function openPanel(envt) {
 
 function closePanel() {
     panel.classList.remove('panel--visible')
+}
+
+function openClose(envt) {
+    if (envt) envt.preventDefault()
+    if (document.querySelector('.panel--visible')) {
+        closePanel()
+    } else {
+        openPanel()
+    }
 }
 
 function sendId(id) {
@@ -123,7 +141,7 @@ function copyLink(link) {
     navigator.clipboard
         .writeText(`${link}`)
         .then(() => {
-
+            showTooltip()
         })
         .catch(() => {
 
@@ -131,7 +149,6 @@ function copyLink(link) {
 }
 
 input.addEventListener('change', () => {
-
     let file = input.files[0]
     console.log(file);
     fileUpload(file)
@@ -157,4 +174,5 @@ copy__link.onclick = () => {
     copyLink(transferLink)
 }
 
+complete__text.onclick = openClose
 panel__close.onclick = closePanel
