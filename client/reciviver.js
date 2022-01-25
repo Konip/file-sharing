@@ -1,7 +1,7 @@
 const socket = io()
-import { drawCircle, options } from './progressBar.js'
-import { audioTemplate, textTemplate, videoTemplate } from './template.js'
-import { changeSVG, formatBytes, formatTime } from './utils.js'
+import { drawCircle, options } from './utils/progressBar.js'
+import { audioTemplate, textTemplate, videoTemplate } from './utils/template.js'
+import { changeSVG, formatBytes, formatTime } from './utils/utils.js'
 
 const progress = document.getElementById('progress')
 const progressNumber = document.querySelector('.progress-number')

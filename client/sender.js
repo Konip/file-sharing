@@ -1,5 +1,6 @@
 const socket = io()
-import { formatBytes } from './utils.js'
+import { drawCircle, options } from './utils/progressBar.js'
+import { formatBytes } from './utils/utils.js'
 
 const input = document.querySelector('input[type=file]')
 const uploader = document.querySelector('.uploader__files')
@@ -18,8 +19,22 @@ const metadataSize = document.querySelector('.metadata-size')
 const panel__close = document.querySelector('.panel__close')
 const complete__text = document.querySelector('.complete__text a')
 const transfer__tooltip = document.querySelector('.transfer__tooltip')
+const progress = document.getElementById('progress')
+const progressNumber = document.querySelector('.progress-number')
+const transfer__container = document.querySelector('.transfer__container')
 
 let transferLink = ''
+let percent = 0
+
+function addLoadingProgressBar() {
+    transfer__container.style.display = 'none'
+    progress.style.display = 'flex'
+}
+
+function deleteProgressBar() {
+    progress.style.display = 'none'
+    transfer__container.style.display = 'block'
+}
 
 function showTooltip() {
     transfer__tooltip.style.opacity = 1
@@ -110,8 +125,19 @@ function sendMetadata(name, size, type) {
 function fileUpload(file) {
 
     const reader = new FileReader();
-
     reader.readAsArrayBuffer(file)
+    reader.onloadstart = addLoadingProgressBar
+
+    reader.onprogress = function (evnt) {
+        const { loaded, total } = evnt
+        percent = Math.trunc((loaded * 100) / total)
+        console.log(percent);
+
+        progressNumber.innerText = `${percent}`
+        drawCircle('#efefef', options.lineWidth, 100 / 100);
+        drawCircle('#3c97f9', options.lineWidth, percent / 100);
+    }
+
     reader.onload = function (evnt) {
 
         const { name, size, type } = file
@@ -133,6 +159,10 @@ function fileUpload(file) {
             sendMetadata(name, size, type)
         })
     }
+    reader.onloadend = deleteProgressBar
+    reader.onerror = function (evnt) {
+        console.log(evnt.currentTarget.error.message);
+    }
 }
 
 function copyLink(link) {
@@ -151,6 +181,7 @@ function copyLink(link) {
 input.addEventListener('change', () => {
     let file = input.files[0]
     console.log(file);
+
     fileUpload(file)
 });
 
@@ -164,9 +195,7 @@ uploader.addEventListener('dragleave', () => {
 
 uploader.addEventListener('drop', (event) => {
     event.preventDefault()
-
     let file = event.dataTransfer.files[0]
-
     fileUpload(file)
 })
 

@@ -70,19 +70,11 @@ ul {
     /* margin:80px; */
     width: 100%;
     height: 100%;
-
     display: flex;
     justify-content: center;
     align-items: center;
     display: none;
-}
-
-#cyrcle {
-    /* margin: 0 auto;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%); */
+    font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
 }
 
 .progress-number {
