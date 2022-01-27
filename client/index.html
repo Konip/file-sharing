@@ -12,10 +12,11 @@
 <body>
     <div class="app">
         <div class="transfer">
-            <div class="progress" id="progress" data-percent="0">
+            <!-- <div class="progress" id="progress" data-percent="0">
                 <span class="progress-number">0</span>
                 <canvas id="cyrcle"></canvas>
-            </div>
+                <div class="transfer__button transfer__button--alt">Cancel</div>
+            </div> -->
             <div class="transfer__container">
                 <div class="transfer__body">
                     <div class="uploader__files">
@@ -52,9 +53,14 @@
                     </div>
 
                 </div>
+                <div class="progress" id="progress" data-percent="0">
+                    <span class="progress-number">0</span>
+                    <canvas id="cyrcle"></canvas>
+                </div>
                 <div class="transfer__footer">
                     <div class="transfer__button get__link" disabled>Get a link</div>
                     <div class="transfer__button copy__link">Copy link</div>
+                    <div class="transfer__button transfer__button--alt">Cancel</div>
                 </div>
             </div>
             <div class="transfer__tooltip">

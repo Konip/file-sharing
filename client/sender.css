@@ -41,6 +41,8 @@ ul {
 
 .transfer__container {
     position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .transfer__tooltip {
@@ -54,7 +56,8 @@ ul {
     padding: 15px;
     border-radius: 18px;
 }
-.transfer__tooltip::before{
+
+.transfer__tooltip::before {
     content: '';
     position: absolute;
     width: 12px;
@@ -65,11 +68,13 @@ ul {
     transform: rotate(45deg);
     border-radius: 1px;
 }
+
 .progress {
     position: relative;
     /* margin:80px; */
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
+    height: 21.125em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -147,6 +152,14 @@ ul {
     position: relative;
 }
 
+.transfer .transfer__button-container {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 11.875em;
+}
+
 .transfer__button {
     background: #409fff;
     border: 1px solid #409fff;
@@ -182,6 +195,21 @@ ul {
 .transfer__button:hover {
     background-color: #0073e5;
     border-color: #0073e5;
+}
+
+.transfer__button--alt {
+    display: none;
+    background: transparent;
+    border-color: #409fff;
+    color: #409fff;
+}
+
+.transfer__button--alt:hover {
+    background: rgb(253, 251, 251);
+}
+
+.transfer .transfer__button--cancel {
+    width: 5.625em;
 }
 
 .transfer__contents {

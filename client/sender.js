@@ -11,6 +11,7 @@ const url = document.querySelector('.transfer-link__url')
 const panel = document.querySelector('.panel')
 const get__link = document.querySelector('.get__link')
 const copy__link = document.querySelector('.copy__link')
+const transfer__buttonAlt = document.querySelector('.transfer__button--alt')
 const displayName__body = document.querySelector('.displayName__body')
 const fileSystemTitle = document.querySelector('.file-system-entry__title')
 const fileSystemSize = document.querySelector('.file-system-entry__size')
@@ -21,19 +22,48 @@ const complete__text = document.querySelector('.complete__text a')
 const transfer__tooltip = document.querySelector('.transfer__tooltip')
 const progress = document.getElementById('progress')
 const progressNumber = document.querySelector('.progress-number')
-const transfer__container = document.querySelector('.transfer__container')
+const transfer__body = document.querySelector('.transfer__body')
 
+
+const reader = new FileReader();
 let transferLink = ''
 let percent = 0
 
+function changeButton(type) {
+    switch (type) {
+        case 'onloadstart':
+            get__link.removeAttribute("disabled")
+            get__link.style.display = 'none'
+            transfer__buttonAlt.style.display = 'flex'
+            break;
+
+        case 'copy':
+            copy__link.style.display = 'flex'
+            transfer__buttonAlt.style.display = 'none'
+            break;
+
+        case 'cancel':
+            transfer__buttonAlt.style.display = 'none'
+            break;
+
+        default:
+            break;
+    }
+}
+
+function cancelDownloads() {
+    changeButton('cancel')
+    reader.abort()
+}
+
 function addLoadingProgressBar() {
-    transfer__container.style.display = 'none'
+    transfer__body.style.display = 'none'
     progress.style.display = 'flex'
 }
 
 function deleteProgressBar() {
     progress.style.display = 'none'
-    transfer__container.style.display = 'block'
+    transfer__body.style.display = 'block'
 }
 
 function showTooltip() {
@@ -124,9 +154,11 @@ function sendMetadata(name, size, type) {
 
 function fileUpload(file) {
 
-    const reader = new FileReader();
     reader.readAsArrayBuffer(file)
-    reader.onloadstart = addLoadingProgressBar
+    reader.onloadstart = () => {
+        addLoadingProgressBar()
+        changeButton('onloadstart')
+    }
 
     reader.onprogress = function (evnt) {
         const { loaded, total } = evnt
@@ -144,9 +176,8 @@ function fileUpload(file) {
 
         let link = createLink()
         console.log(link);
-        get__link.removeAttribute("disabled")
-        get__link.style.display = 'none'
-        copy__link.style.display = 'flex'
+
+        changeButton('copy')
         openPanel()
         addDescription(name, size, type)
 
@@ -202,6 +233,8 @@ uploader.addEventListener('drop', (event) => {
 copy__link.onclick = () => {
     copyLink(transferLink)
 }
+
+transfer__buttonAlt.onclick = cancelDownloads
 
 complete__text.onclick = openClose
 panel__close.onclick = closePanel
