@@ -23,16 +23,17 @@ const transfer__tooltip = document.querySelector('.transfer__tooltip')
 const progress = document.getElementById('progress')
 const progressNumber = document.querySelector('.progress-number')
 const transfer__body = document.querySelector('.transfer__body')
-
+const transfer__loaded = document.querySelector('.transfer__loaded')
+const transfer__loadedText = document.querySelector('.transfer__loaded p')
 
 const reader = new FileReader();
 let transferLink = ''
 let percent = 0
+let toggle = false
 
 function changeButton(type) {
     switch (type) {
         case 'onloadstart':
-            get__link.removeAttribute("disabled")
             get__link.style.display = 'none'
             transfer__buttonAlt.style.display = 'flex'
             break;
@@ -44,6 +45,7 @@ function changeButton(type) {
 
         case 'cancel':
             transfer__buttonAlt.style.display = 'none'
+            get__link.style.display = 'flex'
             break;
 
         default:
@@ -52,13 +54,15 @@ function changeButton(type) {
 }
 
 function cancelDownloads() {
-    changeButton('cancel')
     reader.abort()
+    changeButton('cancel')
+    transfer__loaded.style.display = 'none'
 }
 
 function addLoadingProgressBar() {
     transfer__body.style.display = 'none'
     progress.style.display = 'flex'
+    transfer__loaded.style.display = 'block'
 }
 
 function deleteProgressBar() {
@@ -124,15 +128,17 @@ function sendFile(file) {
 
     const { name, type, size } = file
 
-    var chunkCounter = 0
-
+    let chunkCounter = 0
+    // байт
     const chunkSize = 10000
-    var numberofChunks = Math.ceil(file.size / chunkSize);
-
-    // console.log(numberofChunks);
-
+    // const chunkSize = 1000000 // 1 mb
+    let numberofChunks = Math.ceil(size / chunkSize);
+    console.log(numberofChunks);
     while (numberofChunks--) {
-        console.log(file);
+        // if (toggle) {
+        //     numberofChunks = 0
+        //     console.log(numberofChunks);
+        // }
         console.log(type);
         let chunk = new Blob([file], { type: type }).slice(chunkCounter, chunkCounter + chunkSize)
 
@@ -143,7 +149,6 @@ function sendFile(file) {
             chunkSize,
             'buffer': chunk
         })
-
         chunkCounter += chunkSize
     }
 }
@@ -163,9 +168,11 @@ function fileUpload(file) {
     reader.onprogress = function (evnt) {
         const { loaded, total } = evnt
         percent = Math.trunc((loaded * 100) / total)
-        console.log(percent);
+        console.log(evnt);
 
         progressNumber.innerText = `${percent}`
+        transfer__loadedText.innerText = `${formatBytes(loaded)} of ${formatBytes(total)} uploaded`
+
         drawCircle('#efefef', options.lineWidth, 100 / 100);
         drawCircle('#3c97f9', options.lineWidth, percent / 100);
     }
@@ -190,7 +197,10 @@ function fileUpload(file) {
             sendMetadata(name, size, type)
         })
     }
-    reader.onloadend = deleteProgressBar
+    reader.onloadend = () => {
+        transfer__loaded.style.display = 'none'
+        deleteProgressBar()
+    }
     reader.onerror = function (evnt) {
         console.log(evnt.currentTarget.error.message);
     }
@@ -198,7 +208,6 @@ function fileUpload(file) {
 
 function copyLink(link) {
     console.log(link);
-
     navigator.clipboard
         .writeText(`${link}`)
         .then(() => {
@@ -228,6 +237,7 @@ uploader.addEventListener('drop', (event) => {
     event.preventDefault()
     let file = event.dataTransfer.files[0]
     fileUpload(file)
+    uploaderСontent.style.borderColor = '#d9dcde'
 })
 
 copy__link.onclick = () => {
@@ -235,6 +245,11 @@ copy__link.onclick = () => {
 }
 
 transfer__buttonAlt.onclick = cancelDownloads
-
 complete__text.onclick = openClose
 panel__close.onclick = closePanel
+
+socket.on('stop', () => {
+    //    socket.off('file-sharing')
+    toggle = true
+    console.log('stop');
+})

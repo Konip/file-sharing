@@ -13,10 +13,6 @@
 <body>
     <div class="app">
         <div class="transfer">
-            <div class="progress" id="progress" data-percent="0">
-                <span class="progress-number">0</span>
-                <canvas id="cyrcle"></canvas>
-            </div>
             <div class="transfer__container">
                 <div class="transfer__body">
                     <div class="transfer__contents">
@@ -50,9 +46,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="progress" id="progress" data-percent="0">
+                    <span class="progress-number">0</span>
+                    <canvas id="cyrcle"></canvas>
+                </div>
+                <div class="transfer__loaded">
+                    <p></p>
+                </div>
                 <div class="transfer__footer">
-                    <div class="transfer__button">Download</div>
-
+                    <button class="transfer__button">Download</button>
+                    <button class="transfer__button transfer__button--alt">Cancel</button>
                 </div>
             </div>
         </div>

@@ -1,10 +1,11 @@
 const socket = io()
 import { drawCircle, options } from './utils/progressBar.js'
-import { audioTemplate, textTemplate, videoTemplate } from './utils/template.js'
+import { audioTemplate, downloaderComplete, textTemplate, videoTemplate } from './utils/template.js'
 import { changeSVG, formatBytes, formatTime } from './utils/utils.js'
 
 const progress = document.getElementById('progress')
 const progressNumber = document.querySelector('.progress-number')
+const transfer__body = document.querySelector('.transfer__body')
 const transfer__container = document.querySelector('.transfer__container')
 const panel = document.querySelector('.panel')
 const fileSystemTitle = document.querySelector('.file-system-entry__title')
@@ -12,11 +13,14 @@ const fileSystemSize = document.querySelector('.file-system-entry__size')
 const fileSystemFormat = document.querySelector('.file-system-entry__format')
 const filelist__action = document.querySelector('.filelist__action')
 const transfer__button = document.querySelector('.transfer__button')
+const transfer__buttonAlt = document.querySelector('.transfer__button--alt')
 const panel__close = document.querySelector('.panel__close')
 const preview__item = document.querySelector('.preview__item')
 const preview__title = document.querySelector('.preview__title')
 const preview__subtitle = document.querySelector('.preview__subtitle')
 const preview__button = document.querySelector('.preview__button')
+const transfer__loaded = document.querySelector('.transfer__loaded')
+const transfer__loadedText = document.querySelector('.transfer__loaded p')
 
 let audioProgress
 let audio
@@ -28,6 +32,29 @@ let percent = 0
 let play = false
 let fileDownloaded = false
 
+function changeButton(type) {
+    switch (type) {
+        case 'onloadstart':
+            transfer__button.style.display = 'none'
+            transfer__buttonAlt.style.display = 'flex'
+            break;
+
+        case 'cancel':
+            transfer__buttonAlt.style.display = 'none'
+            transfer__button.style.display = 'flex'
+            break;
+
+        default:
+            break;
+    }
+}
+
+function cancelDownloads() {
+    socket.emit('stop-sharing')
+    changeButton('cancel')
+    transfer__loaded.style.display = 'none'
+}
+
 function playPause() {
     if (play) {
         audio.pause()
@@ -38,12 +65,14 @@ function playPause() {
     play = !play
 }
 
-function createDownload(fileName, type, content) {
+function downloadFile(fileName, type, content) {
     let blob = new Blob([content], { type: type });
     let link = document.createElement("a");
     link.download = fileName;
     link.href = URL.createObjectURL(blob);
     link.click()
+    deleteProgressBar()
+
     URL.revokeObjectURL(link.href);
 }
 
@@ -52,8 +81,9 @@ function updateTimeTrack(time) {
 }
 
 function addLoadingProgressBar() {
-    transfer__container.style.display = 'none'
+    transfer__body.style.display = 'none'
     progress.style.display = 'flex'
+    transfer__loaded.style.display = 'block'
 }
 
 function updateProgressBarAudio() {
@@ -67,11 +97,13 @@ function updateProgressBarAudio() {
 
 function deleteProgressBar() {
     progress.style.display = 'none'
-    transfer__container.style.display = 'block'
+    // transfer__body.style.display = 'block'
+    transfer__container.innerHTML = downloaderComplete()
 }
 
 function download() {
     socket.emit('download')
+    changeButton('onloadstart')
 }
 
 function openPanel() {
@@ -151,7 +183,7 @@ function createPreviewAudio(name, size, buffer) {
             if (newLeft < 0) {
                 newLeft = 0;
             }
-            // let rightEdge = slider.offsetWidth - pin.offsetWidth;
+
             let rightEdge = slider.offsetWidth
             if (newLeft > rightEdge) {
                 newLeft = rightEdge;
@@ -223,7 +255,7 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
 
     if (p > percent && p <= 100) {
         percent = p
-        // console.log(p);
+        console.log(p);
 
         progressNumber.innerText = `${percent}`
         drawCircle('#efefef', options.lineWidth, 100 / 100);
@@ -231,11 +263,19 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
     }
 
     arrBuffer.push(new Blob([buffer]))
+    transfer__loadedText.innerText = `${formatBytes(sum)} of ${formatBytes(size)} uploaded`
 
     if (chunkSize > buffer.byteLength) {
-        createPreview(name, type, size, new Blob(arrBuffer.flat()))
-        // createDownload(name, type, new Blob(arrBuffer.flat()))
+        // createPreview(name, type, size, new Blob(arrBuffer.flat()))
+        downloadFile(name, type, new Blob(arrBuffer.flat()))
         fileDownloaded = true
+
+        if (percent < 100) {
+            progressNumber.innerText = `${100}`
+            drawCircle('#efefef', options.lineWidth, 100 / 100);
+            drawCircle('#3c97f9', options.lineWidth, 100 / 100);
+        }
+
     }
 }
 
@@ -249,7 +289,7 @@ filelist__action.onclick = () => {
 transfer__button.onclick = download
 preview__button.onclick = download
 panel__close.onclick = closePanel
-
+transfer__buttonAlt.onclick = cancelDownloads
 
 socket.on('send-chunk', arg => {
     receivingFiles(arg)
