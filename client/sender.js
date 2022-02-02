@@ -72,6 +72,7 @@ function deleteProgressBar() {
 
 function showTooltip() {
     transfer__tooltip.style.opacity = 1
+    closePanel()
     setTimeout(() => {
         transfer__tooltip.style.opacity = 0
     }, 5000)
