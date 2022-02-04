@@ -22,6 +22,9 @@ app.get('/', (req, res) => {
 app.get('/reciviver', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'));
 });
+app.get('/404', (req, res) => {
+  res.sendFile(path.join(__dirname, '../', 'client/404.html'));
+});
 
 // app.get('/t/:id', (req, res) => {
 //   console.log(req.params.id);

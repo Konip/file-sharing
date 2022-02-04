@@ -16,6 +16,9 @@ ul {
     left: 0;
     top: 0;
     overflow: hidden;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image:url('./img/1-1.jpg')
 }
 
 .transfer__body h2 {
@@ -407,6 +410,7 @@ ul {
 .metadata__container {
     border-bottom: 0.0625em solid #e8ebed;
     margin-bottom: 1.5625em;
+    margin-top: 0.5em;
     color: #6a6d70;
     display: block;
     font-size: .875em;
@@ -433,13 +437,7 @@ ul {
 .details__col {
     margin-right: 8%;
     width: 46%;
-    padding: 0 1em;
-}
-
-.details__col {
-    margin-right: 8%;
-    width: 46%;
-    padding: 0 1em;
+    /* padding: 0 1em; */
 }
 
 .displayName {
