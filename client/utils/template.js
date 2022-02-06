@@ -36,17 +36,13 @@ export function audioTemplate() {
 </div>`
 }
 
-export function textTemplate() {
-    return `<iframe id="viewer" frameborder="0" scrolling="no" width="300" height="200"></iframe>`
-}
-
 export function videoTemplate() {
     return `<div class="preview__video">
     <video src="" controls=""></video>
     </div>`
 }
 
-export function downloaderComplete(){
+export function downloaderCompleteTemplate() {
     return `
     <div class="transfer__window downloader">
     <div class="transfer__contents">
@@ -66,17 +62,56 @@ export function downloaderComplete(){
   
     </div>
     <div class="transfer__footer">
-        <button class="transfer__back" aria-label="Go to transfer">
-            <svg viewBox="0 0 32 32" focusable="false">
-                <g fill="none" fill-rule="evenodd">
-                    <rect width="100%" height="100%" fill="#e8ebed" rx="50%"></rect>
-                    <path fill="#6a6d70" d="M18.885 10.814l-1.57-1.57-7.072 7.07 7.07 7.07 1.572-1.57-5.5-5.5 5.5-5.5z">
-                    </path>
-                </g>
-            </svg>
-        </button>
-        <button class="transfer__button">Send a file?</button>
+        <button class="transfer__button success">Success</button>
     </div>
 </div>
 `
+}
+
+export function tooltip(text) {
+    return `<div class="transfer__tooltip">
+        <p>${text}</p>
+    </div>`
+}
+
+export function transfer__bodyTemplate(){
+   return ` <div class="transfer__body">
+   <div class="transfer__contents">
+       <svg class="downloader__top-icon" viewBox="0 0 170 170">
+           <g fill="#d4d7d9" fill-rule="evenodd">
+               <path d="M145.104 24.896c33.195 33.194 33.195 87.014 0 120.208-33.194 33.195-87.014 33.195-120.208 0C-8.3 111.91-8.3 58.09 24.896 24.896 58.09-8.3 111.91-8.3 145.104 24.896zm-7.071 7.071c-29.29-29.29-76.777-29.29-106.066 0-29.29 29.29-29.29 76.777 0 106.066 29.29 29.29 76.777 29.29 106.066 0 29.29-29.29 29.29-76.777 0-106.066z">
+               </path>
+               <path d="M82 100.843V59.007A4.006 4.006 0 0 1 86 55c2.21 0 4 1.794 4 4.007v41.777l15.956-15.956a4.003 4.003 0 0 1 5.657 0 4.004 4.004 0 0 1 0 5.657l-22.628 22.628a3.99 3.99 0 0 1-3.017 1.166 3.992 3.992 0 0 1-3.012-1.166L60.328 90.485a4.003 4.003 0 0 1 0-5.657 4.004 4.004 0 0 1 5.657 0L82 100.843z">
+               </path>
+           </g>
+       </svg>
+       <h2>Ready when you are</h2>
+       <div class="file-system-entry">
+           <h6 class="file-system-entry__title">278837.png</h6>
+           <div class="file-system-entry__details">
+               <span class="file-system-entry__size">4.31 MB</span>
+               <span class="file-system-entry__format">png</span>
+           </div>
+           <div class="file-system-entry__actions">
+               <div class="filelist__action">
+                   <svg width="24" height="24">
+                       <path fill="current" d="M15.31 13.8957l1.397 1.3972c.3906.39.3906 1.0232 0 1.414-.3904.3902-1.0236.3902-1.414 0l-1.3973-1.397c-.6937.437-1.5152.69-2.3957.69C9.0147 16 7 13.985 7 11.5S9.0147 7 11.5 7 16 9.0147 16 11.5c0 .8805-.253 1.702-.69 2.3957zM0 12C0 5.3726 5.3726 0 12 0s12 5.3726 12 12-5.3726 12-12 12S0 18.6274 0 12zm22 0c0-5.5228-4.4772-10-10-10S2 6.4772 2 12s4.4772 10 10 10 10-4.4772 10-10zm-10.5 2c1.3807 0 2.5-1.1193 2.5-2.5S12.8807 9 11.5 9 9 10.1193 9 11.5s1.1193 2.5 2.5 2.5z">
+                       </path>
+                   </svg>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+<div class="progress" id="progress" data-percent="0">
+   <span class="progress-number">0</span>
+   <canvas id="cyrcle" height="220" width="220"></canvas>
+</div>
+<div class="transfer__loaded">
+   <p></p>
+</div>
+<div class="transfer__footer">
+   <button class="transfer__button">Download</button>
+   <button class="transfer__button transfer__button--alt">Cancel</button>
+</div>`
 }

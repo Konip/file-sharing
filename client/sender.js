@@ -1,11 +1,14 @@
 const socket = io()
 import { drawCircle, options } from './utils/progressBar.js'
+import { tooltip } from './utils/template.js'
+import { TypeWriter } from './utils/TypeWriter.js'
 import { formatBytes } from './utils/utils.js'
 
 const input = document.querySelector('input[type=file]')
 const uploader = document.querySelector('.uploader__files')
 const uploaderСontent = document.querySelector('.uploader__files-content')
 const transfer = document.querySelector('.transfer__contents')
+const transfer1 = document.querySelector('.transfer')
 const url = document.querySelector('.transfer-link__url')
 // const transfer__button = document.querySelector('.transfer__button')
 const panel = document.querySelector('.panel')
@@ -25,11 +28,17 @@ const progressNumber = document.querySelector('.progress-number')
 const transfer__body = document.querySelector('.transfer__body')
 const transfer__loaded = document.querySelector('.transfer__loaded')
 const transfer__loadedText = document.querySelector('.transfer__loaded p')
+const title = document.querySelector('.title-anim-word')
+
+function init() {
+    const words = ["anything", "videos", "music", "images", "documents"]
+    const wait = 6000
+    new TypeWriter(title, words, wait)
+}
 
 const reader = new FileReader();
 let transferLink = ''
 let percent = 0
-let toggle = false
 
 function changeButton(type) {
     switch (type) {
@@ -70,11 +79,17 @@ function deleteProgressBar() {
     transfer__body.style.display = 'block'
 }
 
-function showTooltip() {
-    transfer__tooltip.style.opacity = 1
+function showTooltip(text) {
+    // transfer__tooltip.innerHTML = `<p>${text}</p>`
+    // transfer__tooltip.style.opacity = 1
+    let el = document.createElement('div')
+    el.innerHTML = tooltip(text)
+    console.log(el);
+    transfer1.appendChild(el)
     closePanel()
     setTimeout(() => {
-        transfer__tooltip.style.opacity = 0
+        // transfer__tooltip.style.opacity = 0
+        // transfer__tooltip.innerHTML = ''
     }, 5000)
 }
 
@@ -136,10 +151,6 @@ function sendFile(file) {
     let numberofChunks = Math.ceil(size / chunkSize);
     console.log(numberofChunks);
     while (numberofChunks--) {
-        // if (toggle) {
-        //     numberofChunks = 0
-        //     console.log(numberofChunks);
-        // }
         console.log(type);
         let chunk = new Blob([file], { type: type }).slice(chunkCounter, chunkCounter + chunkSize)
 
@@ -204,6 +215,7 @@ function fileUpload(file) {
     }
     reader.onerror = function (evnt) {
         console.log(evnt.currentTarget.error.message);
+        showTooltip('Limit is exceeded. Maximum file size 2 GB')
     }
 }
 
@@ -212,12 +224,14 @@ function copyLink(link) {
     navigator.clipboard
         .writeText(`${link}`)
         .then(() => {
-            showTooltip()
+            showTooltip('This link has been copied to your clipboard')
         })
         .catch(() => {
 
         });
 }
+
+document.addEventListener('DOMContentLoaded', init)
 
 input.addEventListener('change', () => {
     let file = input.files[0]
@@ -237,6 +251,7 @@ uploader.addEventListener('dragleave', () => {
 uploader.addEventListener('drop', (event) => {
     event.preventDefault()
     let file = event.dataTransfer.files[0]
+    console.log(file);
     fileUpload(file)
     uploaderСontent.style.borderColor = '#d9dcde'
 })

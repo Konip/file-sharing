@@ -1,6 +1,7 @@
 const socket = io()
 import { drawCircle, options } from './utils/progressBar.js'
-import { audioTemplate, downloaderComplete, textTemplate, videoTemplate } from './utils/template.js'
+import { audioTemplate, downloaderCompleteTemplate, transfer__bodyTemplate, videoTemplate } from './utils/template.js'
+import { TypeWriter } from './utils/typeWriter.js'
 import { changeSVG, formatBytes, formatTime } from './utils/utils.js'
 
 const progress = document.getElementById('progress')
@@ -21,6 +22,8 @@ const preview__subtitle = document.querySelector('.preview__subtitle')
 const preview__button = document.querySelector('.preview__button')
 const transfer__loaded = document.querySelector('.transfer__loaded')
 const transfer__loadedText = document.querySelector('.transfer__loaded p')
+const title = document.querySelector('.title-anim-word')
+let success
 
 let audioProgress
 let audio
@@ -31,6 +34,54 @@ let sum = 0
 let percent = 0
 let play = false
 let fileDownloaded = false
+let preview = false
+let fileData = {}
+
+const MIMEtype = {
+    'image': {
+        'image/gif': 'image/gif',
+        'image/jpeg': 'image/jpeg',
+        'image/pjpeg': 'image/pjpeg',
+        'image/png': 'image/png',
+        'image/svg+xml': 'image/svg+xml',
+        'image/tiff': 'image/tiff',
+        'image/vnd.microsoft.icon': 'image/vnd.microsoft.icon',
+        ' image/vnd.wap.wbmp': ' image/vnd.wap.wbmp',
+        'image/webp': 'image/webp',
+    },
+    'audio': {
+        'audio/basic': 'audio/basic',
+        'audio/L24': 'audio/L24',
+        'audio/mp4': 'audio/mp4',
+        'audio/aac': 'audio/aac',
+        'audio/mpeg': 'audio/mpeg',
+        'audio/ogg': 'audio/ogg',
+        'audio/vorbis': 'audio/vorbis',
+        'audio/x-ms-wma': 'audio/x-ms-wma',
+        'audio/x-ms-wax': 'audio/x-ms-wax',
+        'audio/vnd.rn-realaudio': 'audio/vnd.rn-realaudio',
+        'audio/vnd.wave': 'audio/vnd.wave',
+        'audio/webm': 'audio/webm',
+    },
+    'video': {
+        'video/mpeg': 'video/mpeg',
+        'video/mp4': 'video/mp4',
+        'video/ogg': 'video/ogg',
+        'video/quicktime': 'video/quicktime',
+        'video/webm': 'video/webm',
+        'video/x-ms-wmv': 'video/x-ms-wmv',
+        'video/x-flv': 'video/x-flv',
+        'video/x-msvideo': 'video/x-msvideo',
+        'video/3gpp': 'video/3gpp',
+        'video/3gpp2': 'video/3gpp2',
+    }
+}
+
+function init() {
+    const words = ["anything", "videos", "music", "images", "documents"]
+    const wait = 6000
+    new TypeWriter(title, words, wait)
+}
 
 function changeButton(type) {
     switch (type) {
@@ -72,6 +123,7 @@ function downloadFile(fileName, type, content) {
     link.href = URL.createObjectURL(blob);
     link.click()
     deleteProgressBar()
+    downloaderComplete()
 
     URL.revokeObjectURL(link.href);
 }
@@ -95,13 +147,27 @@ function updateProgressBarAudio() {
     updateTimeTrack(audio.currentTime)
 }
 
-function deleteProgressBar() {
-    progress.style.display = 'none'
-    // transfer__body.style.display = 'block'
-    transfer__container.innerHTML = downloaderComplete()
+function ret(){
+    transfer__container.innerHTML = transfer__bodyTemplate()
 }
 
-function download() {
+function downloaderComplete(){
+    transfer__container.innerHTML = downloaderCompleteTemplate()
+    success = document.querySelector('.success')
+    success.onclick = ret
+    // transfer__body.style.display = 'none'
+}
+
+function deleteProgressBar() {
+    progress.style.display = 'none'
+    transfer__body.style.display = 'block'
+    transfer__loaded.style.display = 'none'
+    changeButton('cancel')
+}
+
+function download(type) {
+    console.log(type)
+    preview = type
     socket.emit('download')
     changeButton('onloadstart')
 }
@@ -134,7 +200,6 @@ function addSrc(name, size, buffer, element, evnt) {
         if (timeTrack) {
             timeTrack.innerText = (element.duration / 60).toFixed(2)
         }
-        // URL.revokeObjectURL(element.src)
         openPanel()
     })
 
@@ -206,16 +271,6 @@ function createPreviewAudio(name, size, buffer) {
     }
 }
 
-function createPreviewText(name, size, buffer) {
-    let el = document.createElement('div')
-    el.classList.add('preview__text')
-    preview__item.append(el)
-    el.innerHTML = textTemplate()
-    let txt = document.querySelector('iframe')
-
-    addSrc(name, size, buffer, txt, 'load')
-}
-
 function createPreviewVideo(name, size, buffer) {
 
     preview__item.innerHTML = videoTemplate()
@@ -226,22 +281,16 @@ function createPreviewVideo(name, size, buffer) {
 }
 
 function createPreview(name, type, size, buffer) {
-
     switch (type) {
-        case 'image/png': case 'image/jpeg': case 'image/gif': {
+        case MIMEtype.image[type]: {
             createPreviewImage(name, size, buffer)
             break
         }
-        case 'audio/mp4': case 'audio/mpeg': {
+        case MIMEtype.audio[type]: {
             createPreviewAudio(name, size, buffer)
             break
         }
-        case 'text/plain': case 'application/pdf': {
-            createPreviewText(name, size, buffer)
-            console.log('text');
-            break
-        }
-        case 'video/mp4': {
+        case MIMEtype.video[type]: {
             createPreviewVideo(name, size, buffer)
             break
         }
@@ -255,7 +304,6 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
 
     if (p > percent && p <= 100) {
         percent = p
-        console.log(p);
 
         progressNumber.innerText = `${percent}`
         drawCircle('#efefef', options.lineWidth, 100 / 100);
@@ -266,28 +314,37 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
     transfer__loadedText.innerText = `${formatBytes(sum)} of ${formatBytes(size)} uploaded`
 
     if (chunkSize > buffer.byteLength) {
-        // createPreview(name, type, size, new Blob(arrBuffer.flat()))
-        downloadFile(name, type, new Blob(arrBuffer.flat()))
+
+        if (preview) {
+            createPreview(name, type, size, new Blob(arrBuffer.flat()))
+        } else {
+            downloadFile(name, type, new Blob(arrBuffer.flat()))
+        }
+
         fileDownloaded = true
+        preview = false
+        fileData = { name, type }
 
         if (percent < 100) {
             progressNumber.innerText = `${100}`
             drawCircle('#efefef', options.lineWidth, 100 / 100);
             drawCircle('#3c97f9', options.lineWidth, 100 / 100);
         }
-
     }
 }
 
-document.addEventListener("DOMContentLoaded", socket.emit('page-loaded'));
+document.addEventListener("DOMContentLoaded", () => {
+    socket.emit('page-loaded')
+    init()
+});
 
 filelist__action.onclick = () => {
     if (!fileDownloaded) {
-        download()
+        download(true)
     }
 }
-transfer__button.onclick = download
-preview__button.onclick = download
+transfer__button.onclick = () => download(false)
+preview__button.onclick = () => downloadFile(fileData.name, fileData.type, new Blob(arrBuffer.flat()))
 panel__close.onclick = closePanel
 transfer__buttonAlt.onclick = cancelDownloads
 

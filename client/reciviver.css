@@ -18,7 +18,7 @@
 
 .transfer {
     background: #fff;
-    border-radius: 10px;
+    border-radius: 1rem;
     box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
     height: 25.625em;
     left: 5em;
@@ -203,20 +203,6 @@
     padding: 0 1.25em;
     position: relative;
     font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
-}
-
-.transfer__back {
-    background: none;
-    border: 0;
-    cursor: pointer;
-    font-size: inherit;
-    left: 1.25rem;
-    padding: 0;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 2rem;
-    width: 2rem;
 }
 
 .transfer__button {
@@ -563,4 +549,39 @@
     padding: 0 .45455em;
     text-align: center;
     font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
+}
+
+.title {
+    font-family: GT Super WT, "ui-serif", "Georgia", "Cambria", "Times New Roman", "Times", "serif";
+    height: max-content;
+    text-align: center;
+    color: black;
+    position: absolute;
+    top: 20%;
+    left: 35%;
+}
+
+.title__container {
+    margin: 0 auto;
+    width: 100%;
+    font-size: 5vw;
+}
+.title-anim__container{
+    text-align: left;
+}
+.title-anim-word{
+    font-weight: 600;
+}
+.title-left-word{
+
+}
+
+.title-h1 {
+    /* font-size: 5rem; */
+    font-size: 5vw;
+    text-shadow: 1px 1px 2px #feefdb;
+    /* user-select: none; */
+    font-weight: 400;
+    /* max-width: min-content; */
+    max-width: 656px;
 }

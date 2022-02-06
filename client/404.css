@@ -3,12 +3,23 @@
     margin: 0;
     padding: 0;
 }
+
 .app {
     height: 100%;
-    width:  100%;
-
+    width: 100%;
+    position: relative;
 }
-/* .lottie{
-    height: 100vh;
-    width: 100vw;
-} */
+
+.btn {
+    text-transform: uppercase;
+    position: absolute;
+    top: 71%;
+    left: 23%;
+    background-color: #192268;
+    padding: 14px 38px;
+    color: white;
+    border-radius: 28px;
+    border: none;
+    font-family: averta_stdregular, Helvetica Neue, Helvetica;
+    font-weight: 700;
+}

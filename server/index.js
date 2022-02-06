@@ -66,7 +66,6 @@ io.on('connection', (socket) => {
   socket.on('stop-sharing', () => {
     // socket.broadcast.emit('stop')
     console.log('stop-sharing');
-
   })
 
   socket.on("disconnect", () => {
