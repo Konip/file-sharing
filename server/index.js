@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 // });
 
 app.get('/t/:id', (req, res) => {
-  console.log(req.params.id);
+  // console.log(req.params.id);
 
   if (req.params.id === id) {
     res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'))
