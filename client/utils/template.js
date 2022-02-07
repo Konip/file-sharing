@@ -43,9 +43,7 @@ export function videoTemplate() {
 }
 
 export function downloaderCompleteTemplate() {
-    return `
-    <div class="transfer__window downloader">
-    <div class="transfer__contents">
+    return `<div class="transfer__contents">
         <div class="downloader__complete">
             <svg class="downloader__image" viewBox="304 227 171 171">
                 <g fill="#d4d7d9" fill-rule="evenodd">
@@ -59,13 +57,7 @@ export function downloaderCompleteTemplate() {
             </svg>
             <h2>Your file was uploaded successfully</h2>
         </div>
-  
-    </div>
-    <div class="transfer__footer">
-        <button class="transfer__button success">Success</button>
-    </div>
-</div>
-`
+    </div>`
 }
 
 export function tooltip(text) {
@@ -74,8 +66,8 @@ export function tooltip(text) {
     </div>`
 }
 
-export function transfer__bodyTemplate(){
-   return ` <div class="transfer__body">
+export function transfer__bodyTemplate(name, size) {
+    return `<div class="transfer__body">
    <div class="transfer__contents">
        <svg class="downloader__top-icon" viewBox="0 0 170 170">
            <g fill="#d4d7d9" fill-rule="evenodd">
@@ -87,9 +79,9 @@ export function transfer__bodyTemplate(){
        </svg>
        <h2>Ready when you are</h2>
        <div class="file-system-entry">
-           <h6 class="file-system-entry__title">278837.png</h6>
+           <h6 class="file-system-entry__title">${name}</h6>
            <div class="file-system-entry__details">
-               <span class="file-system-entry__size">4.31 MB</span>
+               <span class="file-system-entry__size">${size}</span>
                <span class="file-system-entry__format">png</span>
            </div>
            <div class="file-system-entry__actions">
@@ -102,16 +94,5 @@ export function transfer__bodyTemplate(){
            </div>
        </div>
    </div>
-</div>
-<div class="progress" id="progress" data-percent="0">
-   <span class="progress-number">0</span>
-   <canvas id="cyrcle" height="220" width="220"></canvas>
-</div>
-<div class="transfer__loaded">
-   <p></p>
-</div>
-<div class="transfer__footer">
-   <button class="transfer__button">Download</button>
-   <button class="transfer__button transfer__button--alt">Cancel</button>
 </div>`
 }

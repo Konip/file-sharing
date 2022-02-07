@@ -7,14 +7,14 @@ import { changeSVG, formatBytes, formatTime } from './utils/utils.js'
 const progress = document.getElementById('progress')
 const progressNumber = document.querySelector('.progress-number')
 const transfer__body = document.querySelector('.transfer__body')
-const transfer__container = document.querySelector('.transfer__container')
 const panel = document.querySelector('.panel')
 const fileSystemTitle = document.querySelector('.file-system-entry__title')
 const fileSystemSize = document.querySelector('.file-system-entry__size')
 const fileSystemFormat = document.querySelector('.file-system-entry__format')
-const filelist__action = document.querySelector('.filelist__action')
-const transfer__button = document.querySelector('.transfer__button')
+let filelist__action = document.querySelector('.filelist__action')
+let transfer__button = document.querySelector('.transfer__button')
 const transfer__buttonAlt = document.querySelector('.transfer__button--alt')
+const success = document.querySelector('.transfer__button.success')
 const panel__close = document.querySelector('.panel__close')
 const preview__item = document.querySelector('.preview__item')
 const preview__title = document.querySelector('.preview__title')
@@ -23,7 +23,6 @@ const preview__button = document.querySelector('.preview__button')
 const transfer__loaded = document.querySelector('.transfer__loaded')
 const transfer__loadedText = document.querySelector('.transfer__loaded p')
 const title = document.querySelector('.title-anim-word')
-let success
 
 let audioProgress
 let audio
@@ -34,8 +33,9 @@ let sum = 0
 let percent = 0
 let play = false
 let fileDownloaded = false
-let preview = false
 let fileData = {}
+let panelOpen = false
+let previewCreated = false
 
 const MIMEtype = {
     'image': {
@@ -85,14 +85,20 @@ function init() {
 
 function changeButton(type) {
     switch (type) {
-        case 'onloadstart':
+        case 'showCancel':
             transfer__button.style.display = 'none'
             transfer__buttonAlt.style.display = 'flex'
             break;
 
-        case 'cancel':
+        case 'showDownload':
             transfer__buttonAlt.style.display = 'none'
             transfer__button.style.display = 'flex'
+            success.style.display = 'none'
+            break;
+
+        case 'showSuccess':
+            transfer__button.style.display = 'none'
+            success.style.display = 'block'
             break;
 
         default:
@@ -102,7 +108,7 @@ function changeButton(type) {
 
 function cancelDownloads() {
     socket.emit('stop-sharing')
-    changeButton('cancel')
+    changeButton('showDownload')
     transfer__loaded.style.display = 'none'
 }
 
@@ -122,10 +128,12 @@ function downloadFile(fileName, type, content) {
     link.download = fileName;
     link.href = URL.createObjectURL(blob);
     link.click()
-    deleteProgressBar()
+    if (!fileDownloaded) {
+        deleteProgressBar()
+    }
     downloaderComplete()
-
     URL.revokeObjectURL(link.href);
+    closePanel()
 }
 
 function updateTimeTrack(time) {
@@ -147,40 +155,58 @@ function updateProgressBarAudio() {
     updateTimeTrack(audio.currentTime)
 }
 
-function ret(){
-    transfer__container.innerHTML = transfer__bodyTemplate()
+function deleteDownloaderComplete() {
+    let size = formatBytes(fileData.size)
+    transfer__body.innerHTML = transfer__bodyTemplate(fileData.name, size)
+
+    filelist__action = document.querySelector('.filelist__action')
+
+    changeButton('showDownload')
+    filelist__action.addEventListener('click', () => {
+        if (previewCreated && panelOpen) {
+            closePanel()
+        }
+        else if (previewCreated && !panelOpen) {
+            openPanel()
+        }
+        else {
+            createPreview(fileData.name, fileData.type, fileData.size, new Blob(arrBuffer.flat()))
+            previewCreated = true
+        }
+    })
 }
 
-function downloaderComplete(){
-    transfer__container.innerHTML = downloaderCompleteTemplate()
-    success = document.querySelector('.success')
-    success.onclick = ret
-    // transfer__body.style.display = 'none'
+function downloaderComplete() {
+    transfer__body.innerHTML = downloaderCompleteTemplate()
+    changeButton('showSuccess')
+    success.addEventListener('click', deleteDownloaderComplete, { once: true })
 }
 
 function deleteProgressBar() {
     progress.style.display = 'none'
     transfer__body.style.display = 'block'
     transfer__loaded.style.display = 'none'
-    changeButton('cancel')
+    changeButton('showDownload')
 }
 
 function download(type) {
     console.log(type)
-    preview = type
+    previewCreated = type
     socket.emit('download')
-    changeButton('onloadstart')
+    changeButton('showCancel')
 }
 
 function openPanel() {
     panel.classList.add('panel--visible')
+    panelOpen = true
 }
 
 function closePanel() {
     panel.classList.remove('panel--visible')
+    panelOpen = false
 }
 
-function addDescription({ name, size, type }) {
+function addDescription({ name, size }) {
     fileSystemTitle.innerText = name
     fileSystemSize.innerText = formatBytes(size)
     fileSystemFormat.innerText = name.slice(name.lastIndexOf('.') + 1)
@@ -315,15 +341,15 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
 
     if (chunkSize > buffer.byteLength) {
 
-        if (preview) {
+        if (previewCreated) {
             createPreview(name, type, size, new Blob(arrBuffer.flat()))
         } else {
             downloadFile(name, type, new Blob(arrBuffer.flat()))
         }
 
         fileDownloaded = true
-        preview = false
-        fileData = { name, type }
+        previewCreated = false
+        fileData = { name, type, size }
 
         if (percent < 100) {
             progressNumber.innerText = `${100}`
@@ -342,9 +368,27 @@ filelist__action.onclick = () => {
     if (!fileDownloaded) {
         download(true)
     }
+    else if (fileDownloaded && panelOpen) {
+        closePanel()
+    }
+    else {
+        openPanel()
+    }
 }
-transfer__button.onclick = () => download(false)
-preview__button.onclick = () => downloadFile(fileData.name, fileData.type, new Blob(arrBuffer.flat()))
+
+transfer__button.addEventListener('click', () => {
+    if (!fileDownloaded) {
+        download(false)
+    } else {
+        downloadFile(fileData.name, fileData.type, new Blob(arrBuffer.flat()))
+    }
+})
+
+preview__button.onclick = () => {
+    downloadFile(fileData.name, fileData.type, new Blob(arrBuffer.flat()))
+    closePanel()
+    previewCreated = true
+}
 panel__close.onclick = closePanel
 transfer__buttonAlt.onclick = cancelDownloads
 

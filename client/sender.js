@@ -8,7 +8,7 @@ const input = document.querySelector('input[type=file]')
 const uploader = document.querySelector('.uploader__files')
 const uploaderСontent = document.querySelector('.uploader__files-content')
 const transfer = document.querySelector('.transfer__contents')
-const transfer1 = document.querySelector('.transfer')
+const transfer__container = document.querySelector('.transfer__container')
 const url = document.querySelector('.transfer-link__url')
 // const transfer__button = document.querySelector('.transfer__button')
 const panel = document.querySelector('.panel')
@@ -22,7 +22,7 @@ const fileSystemFormat = document.querySelector('.file-system-entry__format')
 const metadataSize = document.querySelector('.metadata-size')
 const panel__close = document.querySelector('.panel__close')
 const complete__text = document.querySelector('.complete__text a')
-const transfer__tooltip = document.querySelector('.transfer__tooltip')
+
 const progress = document.getElementById('progress')
 const progressNumber = document.querySelector('.progress-number')
 const transfer__body = document.querySelector('.transfer__body')
@@ -80,16 +80,11 @@ function deleteProgressBar() {
 }
 
 function showTooltip(text) {
-    // transfer__tooltip.innerHTML = `<p>${text}</p>`
-    // transfer__tooltip.style.opacity = 1
-    let el = document.createElement('div')
-    el.innerHTML = tooltip(text)
-    console.log(el);
-    transfer1.appendChild(el)
+    transfer__container.insertAdjacentHTML('beforeend', tooltip(text))
     closePanel()
     setTimeout(() => {
-        // transfer__tooltip.style.opacity = 0
-        // transfer__tooltip.innerHTML = ''
+        const transfer__tooltip = document.querySelector('.transfer__tooltip')
+        transfer__tooltip.remove()
     }, 5000)
 }
 
@@ -236,7 +231,6 @@ document.addEventListener('DOMContentLoaded', init)
 input.addEventListener('change', () => {
     let file = input.files[0]
     console.log(file);
-
     fileUpload(file)
 });
 

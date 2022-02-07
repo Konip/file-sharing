@@ -13,7 +13,7 @@
     overflow: hidden;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image:url('./img/1234.jpg')
+    background-image: url('./img/1234.jpg')
 }
 
 .transfer {
@@ -241,6 +241,10 @@
 
 .transfer__button--alt:hover {
     background: rgb(253, 251, 251);
+}
+
+.transfer__button.success {
+    display: none;
 }
 
 .panel {
@@ -566,15 +570,16 @@
     width: 100%;
     font-size: 5vw;
 }
-.title-anim__container{
+
+.title-anim__container {
     text-align: left;
 }
-.title-anim-word{
+
+.title-anim-word {
     font-weight: 600;
 }
-.title-left-word{
 
-}
+.title-left-word {}
 
 .title-h1 {
     /* font-size: 5rem; */

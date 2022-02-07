@@ -19,22 +19,23 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'client/index.html'));
 });
 
-app.get('/reciviver', (req, res) => {
-  res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'));
-});
-app.get('/404', (req, res) => {
-  res.sendFile(path.join(__dirname, '../', 'client/404.html'));
-});
-
-// app.get('/t/:id', (req, res) => {
-//   console.log(req.params.id);
-
-//   if (req.params.id === id) {
-//     res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'))
-//   } else {
-//     res.status(404).send('хуй')
-//   }
+// app.get('/reciviver', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'));
 // });
+
+// app.get('/404', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../', 'client/404.html'));
+// });
+
+app.get('/t/:id', (req, res) => {
+  console.log(req.params.id);
+
+  if (req.params.id === id) {
+    res.sendFile(path.join(__dirname, '../', 'client/reciviver.html'))
+  } else {
+    res.status(404).sendFile(path.join(__dirname, '../', 'client/404.html'));
+  }
+});
 
 app.use(express.static(path.join(__dirname, '../', 'client')))
 
