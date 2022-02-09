@@ -192,7 +192,6 @@ function deleteProgressBar() {
 }
 
 function download(type) {
-    console.log(type)
     previewCreated = type
     socket.emit('download')
     changeButton('showCancel')
@@ -216,7 +215,7 @@ function addDescription({ name, size }) {
 }
 
 function addSrc(name, size, buffer, element, evnt) {
-    console.log(name, size, element);
+
     element.src = URL.createObjectURL(buffer)
 
     timeTrack = document.querySelector('.audio-player__time--right')
@@ -230,6 +229,7 @@ function addSrc(name, size, buffer, element, evnt) {
             timeTrack.innerText = formatTime(element.duration)
         }
         openPanel()
+        transfer__button.removeAttribute('disabled')
     })
 
 }
