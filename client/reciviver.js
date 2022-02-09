@@ -16,7 +16,7 @@ let transfer__button = document.querySelector('.transfer__button')
 const transfer__buttonAlt = document.querySelector('.transfer__button--alt')
 const success = document.querySelector('.transfer__button.success')
 const panel__close = document.querySelector('.panel__close')
-const preview__item = document.querySelector('.preview__item')
+const preview__content = document.querySelector('.preview__content')
 const preview__title = document.querySelector('.preview__title')
 const preview__subtitle = document.querySelector('.preview__subtitle')
 const preview__button = document.querySelector('.preview__button')
@@ -199,6 +199,7 @@ function download(type) {
 function openPanel() {
     panel.classList.add('panel--visible')
     panelOpen = true
+    panel.style.visibility = 'visible'
 }
 
 function closePanel() {
@@ -224,7 +225,7 @@ function addSrc(name, size, buffer, element, evnt) {
         preview__subtitle.innerText = formatBytes(size)
 
         if (timeTrack) {
-            timeTrack.innerText = (element.duration / 60).toFixed(2)
+            timeTrack.innerText = formatTime(element.duration)
         }
         openPanel()
     })
@@ -234,7 +235,7 @@ function addSrc(name, size, buffer, element, evnt) {
 function createPreviewImage(name, size, buffer) {
     let el = document.createElement('div')
     el.classList.add('preview__image')
-    preview__item.append(el)
+    preview__content.append(el)
     let img = document.createElement('img')
     el.append(img)
     addSrc(name, size, buffer, img, 'load')
@@ -242,7 +243,7 @@ function createPreviewImage(name, size, buffer) {
 
 function createPreviewAudio(name, size, buffer) {
 
-    preview__item.innerHTML = audioTemplate()
+    preview__content.innerHTML = audioTemplate()
 
     let audioPlayerControls = document.querySelector('.audio-player__controls')
     let pin = document.querySelector('.audio-player__slider--pin')
@@ -299,7 +300,7 @@ function createPreviewAudio(name, size, buffer) {
 
 function createPreviewVideo(name, size, buffer) {
 
-    preview__item.innerHTML = videoTemplate()
+    preview__content.innerHTML = videoTemplate()
 
     let video = document.querySelector('video')
 
@@ -348,7 +349,6 @@ function receivingFiles({ name, type, buffer, chunkSize, size }) {
         }
 
         fileDownloaded = true
-        previewCreated = false
         fileData = { name, type, size }
 
         if (percent < 100) {

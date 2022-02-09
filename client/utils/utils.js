@@ -26,15 +26,16 @@ export function changeSVG(play) {
 }
 
 export function formatTime(time) {
-    let minutes = parseInt(time / 60, 10);
-    let seconds = parseInt(time % 60);
+    let sec_num = parseInt(time, 10);
+    let hours = Math.floor(sec_num / 3600);
+    let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    let seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-    // if (minutes < 10) {
-    //     minutes += "0";
-    // }
-
-      if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    return minutes + ':' + seconds
+    if (hours < 10) { hours = "0" + hours; }
+    if (minutes < 10) { minutes = "0" + minutes; }
+    if (seconds < 10) { seconds = "0" + seconds; }
+    
+    return hours > 0
+        ? hours + ':' + minutes + ':' + seconds
+        : minutes + ':' + seconds;
 }

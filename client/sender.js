@@ -1,7 +1,7 @@
 const socket = io()
 import { drawCircle, options } from './utils/progressBar.js'
 import { tooltip } from './utils/template.js'
-import { TypeWriter } from './utils/TypeWriter.js'
+import { TypeWriter } from './utils/typeWriter.js'
 import { formatBytes } from './utils/utils.js'
 
 const input = document.querySelector('input[type=file]')
@@ -10,7 +10,6 @@ const uploaderСontent = document.querySelector('.uploader__files-content')
 const transfer = document.querySelector('.transfer__contents')
 const transfer__container = document.querySelector('.transfer__container')
 const url = document.querySelector('.transfer-link__url')
-// const transfer__button = document.querySelector('.transfer__button')
 const panel = document.querySelector('.panel')
 const get__link = document.querySelector('.get__link')
 const copy__link = document.querySelector('.copy__link')
@@ -22,7 +21,6 @@ const fileSystemFormat = document.querySelector('.file-system-entry__format')
 const metadataSize = document.querySelector('.metadata-size')
 const panel__close = document.querySelector('.panel__close')
 const complete__text = document.querySelector('.complete__text a')
-
 const progress = document.getElementById('progress')
 const progressNumber = document.querySelector('.progress-number')
 const transfer__body = document.querySelector('.transfer__body')
@@ -30,15 +28,18 @@ const transfer__loaded = document.querySelector('.transfer__loaded')
 const transfer__loadedText = document.querySelector('.transfer__loaded p')
 const title = document.querySelector('.title-anim-word')
 
+const reader = new FileReader();
+let transferLink = ''
+let percent = 0
+let tooltipActive = false
+
+let stop = false
+
 function init() {
     const words = ["anything", "videos", "music", "images", "documents"]
     const wait = 6000
     new TypeWriter(title, words, wait)
 }
-
-const reader = new FileReader();
-let transferLink = ''
-let percent = 0
 
 function changeButton(type) {
     switch (type) {
@@ -85,6 +86,7 @@ function showTooltip(text) {
     setTimeout(() => {
         const transfer__tooltip = document.querySelector('.transfer__tooltip')
         transfer__tooltip.remove()
+        tooltipActive = false
     }, 5000)
 }
 
@@ -99,9 +101,8 @@ function addDescription(name, size, type) {
 
 function openPanel(envt) {
     if (envt) envt.preventDefault()
-
     panel.classList.add('panel--visible')
-    // panel.style.display = 'block'
+    panel.style.visibility = 'visible'
 }
 
 function closePanel() {
@@ -145,9 +146,17 @@ function sendFile(file) {
     // const chunkSize = 1000000 // 1 mb
     let numberofChunks = Math.ceil(size / chunkSize);
     console.log(numberofChunks);
-    while (numberofChunks--) {
-        console.log(type);
+
+
+    for (let i = 0; i < numberofChunks && !stop; i++) {
+
         let chunk = new Blob([file], { type: type }).slice(chunkCounter, chunkCounter + chunkSize)
+
+        // socket.emit('check')
+
+        if (stop) {
+            console.log(stop);
+        }
 
         socket.emit('file-sharing', {
             name,
@@ -219,11 +228,12 @@ function copyLink(link) {
     navigator.clipboard
         .writeText(`${link}`)
         .then(() => {
-            showTooltip('This link has been copied to your clipboard')
+            if (!tooltipActive) {
+                showTooltip('This link has been copied to your clipboard')
+                tooltipActive = true
+            }
         })
-        .catch(() => {
-
-        });
+        .catch(() => { });
 }
 
 document.addEventListener('DOMContentLoaded', init)
@@ -250,7 +260,10 @@ uploader.addEventListener('drop', (event) => {
     uploaderСontent.style.borderColor = '#d9dcde'
 })
 
-copy__link.onclick = () => {
+copy__link.onclick = () => copyLink(transferLink)
+url.onclick = () => {
+    url.focus()
+    url.select()
     copyLink(transferLink)
 }
 
@@ -258,8 +271,7 @@ transfer__buttonAlt.onclick = cancelDownloads
 complete__text.onclick = openClose
 panel__close.onclick = closePanel
 
-socket.on('stop', () => {
-    //    socket.off('file-sharing')
-    toggle = true
-    console.log('stop');
+socket.on('check-res', () => {
+    stop = true
+    console.log('check-res');
 })

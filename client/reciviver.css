@@ -42,9 +42,7 @@
 
 .progress {
     position: relative;
-    /* margin:80px; */
     width: 100%;
-    /* height: 21.125em; */
     height: 17.125em;
     justify-content: center;
     align-items: center;
@@ -250,7 +248,7 @@
 .panel {
     max-width: calc(100% - 31.25em);
     width: 55em;
-
+    visibility: hidden;
     background: #fff;
     bottom: 0;
     box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
@@ -313,22 +311,15 @@
 
 .panel__content {
     height: 100%;
-    padding: 2.8125em 5em 6.5625em;
+    /* padding: 2.8125em 5em 6.5625em; */
+    display: flex;
+    flex-direction: column;
     position: relative;
-
     background-color: #f7f9fa;
-    min-height: 100%;
-    padding-bottom: 0;
-    padding-top: 3.4375em;
-    position: relative;
 }
 
 
-.preview {
-    height: calc(100% - 180px);
-    position: absolute;
-    width: calc(100% - 160px);
-}
+.preview {}
 
 .preview__container {
     height: 100%;
@@ -337,27 +328,24 @@
 
 .preview__content {
     height: inherit;
+    padding: 2.8125em 5em;
 }
 
-.preview__item {
-    height: 100%;
-    position: relative;
-    width: 100%;
-}
+.preview__item {}
 
 .preview__image, .preview__video {
     height: 100%;
-    position: relative;
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .preview__image img, .preview__video video {
-    max-height: 100%;
-    max-width: 100%;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    /* height: 100%; */
+    height: max-content;
+    width: 100%;
+    object-fit: contain;
 }
 
 .preview__audio {
@@ -366,7 +354,6 @@
     padding: 1.5625em 1.25em;
     position: absolute;
     width: 100%;
-
     border: 0.0625em solid #e8ebed;
     border-radius: 0.1875em;
     left: 50%;
@@ -477,7 +464,6 @@
 
 .audio-player__time {
     color: #17181a;
-
     font-size: .75em;
     font-weight: 400;
     width: 4.1625em;
@@ -486,15 +472,13 @@
 .preview__bar {
     background-color: #fff;
     border-top: 1px solid #e8ebed;
-    height: 4.375em;
-    margin: 3.4375em -5em 0;
-    padding: 0 2.5em;
+    height: 4.8em;
+    padding: 0 2em;
 }
 
 .preview__meta {
     float: left;
     line-height: 1.25em;
-    width: 70%;
 }
 
 .preview__title {
@@ -538,6 +522,17 @@
     background-color: #0073e5;
 }
 
+.preview__button-container {
+    position: absolute;
+    right: 0px;
+    height: 65px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(90deg, hsla(0, 0%, 100%, 0), #fff 35%, #fff);
+}
+
+
 .downloader__image {
     display: block;
     height: 10.625em;
@@ -563,12 +558,19 @@
     position: absolute;
     top: 20%;
     left: 35%;
+    z-index: 2;
 }
 
 .title__container {
     margin: 0 auto;
-    width: 100%;
-    font-size: 5vw;
+    min-width: 840px;
+    font-size: 96px;
+}
+
+.title__wrapper {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
 }
 
 .title-anim__container {
@@ -581,12 +583,72 @@
 
 .title-left-word {}
 
-.title-h1 {
-    /* font-size: 5rem; */
-    font-size: 5vw;
+.title-text {
     text-shadow: 1px 1px 2px #feefdb;
-    /* user-select: none; */
     font-weight: 400;
-    /* max-width: min-content; */
-    max-width: 656px;
+    padding-left: 8px;
+}
+
+.title-text:last-child {
+    padding-left: 95px;
+}
+
+@media (max-width: 1260px) {
+    .title__container {
+        font-size: 5vw;
+        min-width: 440px;
+    }
+
+    .title-text {
+        max-width: 500px;
+    }
+
+    .title-text:last-child {
+        padding-left: 54px;
+    }
+
+    .title {
+        left: calc(35% + 85px)
+    }
+
+    .preview__content {
+        padding: 1.8125em 2em;
+    }
+}
+
+@media (max-width: 870px) {
+    .transfer {
+        left: 3em;
+    }
+
+    .title {
+        display: none;
+    }
+
+    .panel {
+        max-width: calc(100% - 20%);
+    }
+}
+
+@media (max-width: 620px) {
+    .panel {
+        max-width: calc(100% - 20%);
+    }
+
+    .transfer {
+        width: 15.5em;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+    }
+
+    .metadata__container {
+        padding-left: 30px;
+    }
+}
+
+@media (max-width: 456px) {
+    .panel__content {
+        padding: 0.8125em 1em 0.5625em;
+    }
 }
