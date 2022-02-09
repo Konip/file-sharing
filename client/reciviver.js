@@ -86,8 +86,9 @@ function init() {
 function changeButton(type) {
     switch (type) {
         case 'showCancel':
-            transfer__button.style.display = 'none'
-            transfer__buttonAlt.style.display = 'flex'
+            // transfer__button.style.display = 'none'
+            // transfer__buttonAlt.style.display = 'flex'
+            transfer__button.setAttribute('disabled','disabled')
             break;
 
         case 'showDownload':
@@ -99,6 +100,7 @@ function changeButton(type) {
         case 'showSuccess':
             transfer__button.style.display = 'none'
             success.style.display = 'block'
+            transfer__button.removeAttribute('disabled')
             break;
 
         default:

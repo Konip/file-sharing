@@ -244,6 +244,11 @@
 .transfer__button.success {
     display: none;
 }
+.transfer__button[disabled], .transfer__button:disabled, .transfer__button[disabled]:hover, .transfer__button:disabled:hover {
+    background: #babcbf;
+    border-color: #babcbf;
+    cursor: default;
+}
 
 .panel {
     max-width: calc(100% - 31.25em);

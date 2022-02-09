@@ -18,10 +18,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/index.html'));
 });
 
-app.get('/reciviver', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/reciviver.html'));
-});
-
 app.get('/t/:id', (req, res) => {
   if (req.params.id === id) {
     res.sendFile(path.join(__dirname, 'client/reciviver.html'))
@@ -57,9 +53,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('stop-sharing', () => {
-    socket.broadcast.emit('check-res')
-    // socket.removeAllListeners('file-sharing');
-    console.log('stop-sharing');
+ 
   })
 
   socket.on("disconnect", () => {

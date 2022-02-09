@@ -33,7 +33,6 @@ let transferLink = ''
 let percent = 0
 let tooltipActive = false
 
-let stop = false
 
 function init() {
     const words = ["anything", "videos", "music", "images", "documents"]
@@ -141,22 +140,14 @@ function sendFile(file) {
     const { name, type, size } = file
 
     let chunkCounter = 0
-    // байт
-    const chunkSize = 10000
-    // const chunkSize = 1000000 // 1 mb
+
+    // const chunkSize = 10000
+    const chunkSize = 1000000 // 1 mb
     let numberofChunks = Math.ceil(size / chunkSize);
-    console.log(numberofChunks);
 
-
-    for (let i = 0; i < numberofChunks && !stop; i++) {
+    for (let i = 0; i < numberofChunks; i++) {
 
         let chunk = new Blob([file], { type: type }).slice(chunkCounter, chunkCounter + chunkSize)
-
-        // socket.emit('check')
-
-        if (stop) {
-            console.log(stop);
-        }
 
         socket.emit('file-sharing', {
             name,
@@ -184,7 +175,6 @@ function fileUpload(file) {
     reader.onprogress = function (evnt) {
         const { loaded, total } = evnt
         percent = Math.trunc((loaded * 100) / total)
-        console.log(evnt);
 
         progressNumber.innerText = `${percent}`
         transfer__loadedText.innerText = `${formatBytes(loaded)} of ${formatBytes(total)} uploaded`
@@ -198,14 +188,12 @@ function fileUpload(file) {
         const { name, size, type } = file
 
         let link = createLink()
-        console.log(link);
 
         changeButton('copy')
         openPanel()
         addDescription(name, size, type)
 
         socket.on('send-file', () => {
-            console.log('send')
             sendFile(file)
         })
 
@@ -224,7 +212,8 @@ function fileUpload(file) {
 }
 
 function copyLink(link) {
-    console.log(link);
+    url.focus()
+    url.select()
     navigator.clipboard
         .writeText(`${link}`)
         .then(() => {
@@ -240,7 +229,6 @@ document.addEventListener('DOMContentLoaded', init)
 
 input.addEventListener('change', () => {
     let file = input.files[0]
-    console.log(file);
     fileUpload(file)
 });
 
@@ -255,23 +243,12 @@ uploader.addEventListener('dragleave', () => {
 uploader.addEventListener('drop', (event) => {
     event.preventDefault()
     let file = event.dataTransfer.files[0]
-    console.log(file);
     fileUpload(file)
     uploaderСontent.style.borderColor = '#d9dcde'
 })
 
 copy__link.onclick = () => copyLink(transferLink)
-url.onclick = () => {
-    url.focus()
-    url.select()
-    copyLink(transferLink)
-}
-
+url.onclick = () => copyLink(transferLink)
 transfer__buttonAlt.onclick = cancelDownloads
 complete__text.onclick = openClose
 panel__close.onclick = closePanel
-
-socket.on('check-res', () => {
-    stop = true
-    console.log('check-res');
-})
