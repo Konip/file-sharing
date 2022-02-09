@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    --scale: 0.5625px;
+    --scale: 0.625px;
 }
 
 ul {
@@ -80,14 +80,11 @@ ul {
 
 .progress {
     position: relative;
-    /* margin:80px; */
     width: 100%;
     height: 17.125em;
-    /* height: 21.125em; */
     justify-content: center;
     align-items: center;
     display: none;
-    /* display: flex; */
     font-family: Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
 }
 
@@ -115,7 +112,6 @@ ul {
     position: relative;
     height: 21.125em;
     width: 100%;
-    /* display: none; */
 }
 
 .uploader__files {
@@ -317,7 +313,7 @@ ul {
 .panel {
     max-width: calc(100% - 31.25em);
     width: 55em;
-
+    visibility: hidden;
     background: #fff;
     bottom: 0;
     box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);
@@ -423,12 +419,9 @@ ul {
 .details__col {
     margin-right: 8%;
     width: 46%;
-    /* padding: 0 1em; */
 }
 
-.displayName {
-    /* margin-top: 2.1875rem; */
-}
+.displayName {}
 
 .displayName__header {
     font: normal 500 1rem/1.1875rem Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
@@ -439,6 +432,8 @@ ul {
     color: #484a4d;
     font: normal 400 0.875rem/1.25rem Actief Grotesque, -apple-system, \.SFNSText-Regular, San Francisco, Roboto, Segoe UI, Helvetica Neue, Lucida Grande, sans-serif;
     line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .details__filelist {
@@ -502,29 +497,114 @@ ul {
     position: absolute;
     top: 20%;
     left: 35%;
+    z-index: 2;
 }
 
 .title__container {
     margin: 0 auto;
-    width: 100%;
-    font-size: 5vw;
+    min-width: 840px;
+    font-size: 96px;
 }
-.title-anim__container{
+
+.title__wrapper {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.title-anim__container {
     text-align: left;
 }
-.title-anim-word{
+
+.title-anim-word {
     font-weight: 600;
 }
-.title-left-word{
+
+.title-left-word {}
+
+.title-text {
+    text-shadow: 1px 1px 2px #feefdb;
+    font-weight: 400;
+    padding-left: 8px;
+}
+
+.title-text:last-child {
+    padding-left: 95px;
+}
+
+@media (max-width: 1260px) {
+    .title__container {
+        font-size: 5vw;
+        min-width: 440px;
+    }
+
+    .title-text {
+        max-width: 500px;
+    }
+
+    .title-text:last-child {
+        padding-left: 54px;
+    }
+
+    .title {
+        left: calc(35% + 85px)
+    }
+}
+
+@media (max-width: 870px) {
+    .transfer {
+        left: 3em;
+    }
+
+    .title {
+        display: none;
+    }
+
+    .panel {
+        max-width: calc(100% - 20%);
+    }
+
 
 }
 
-.title-h1 {
-    /* font-size: 5rem; */
-    font-size: 5vw;
-    text-shadow: 1px 1px 2px #feefdb;
-    /* user-select: none; */
-    font-weight: 400;
-    /* max-width: min-content; */
-    max-width: 656px;
+@media (max-width: 720px) {
+    .details h1 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 620px) {
+    .transfer {
+        width: 15.5em;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+    }
+
+    .details__row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .details__col {
+        margin-bottom: 20px;
+    }
+
+    .panel__content h1 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 456px) {
+    .transfer__tooltip {
+        display: none;
+    }
+
+    .panel__content {
+        padding: 0.8125em 1em 0.5625em;
+    }
+
+    .panel__content h1 {
+        font-size: 1.7em;
+    }
 }

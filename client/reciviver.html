@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/reciviver.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-    <link rel="manifest" href="img/site.webmanifest">
-    <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+    <link rel="manifest" href="/img/site.webmanifest">
+    <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <title>File Sharing</title>
@@ -77,20 +77,16 @@
             </div>
             <div class="panel__container">
                 <div class="panel__content">
-                    <div class="preview">
-                        <div class="preview__container">
-                            <div class="preview__content">
-                                <div class="preview__item">
-                                </div>
-                            </div>
+                    <div class="preview__content"></div>
+                    <div class="preview__bar">
+                        <div class="preview__meta">
+                            <div class="preview__title"></div>
+                            <div class="preview__subtitle"></div>
                         </div>
-                        <div class="preview__bar">
-                            <div class="preview__meta">
-                                <div class="preview__title"></div>
-                                <div class="preview__subtitle"></div>
-                            </div>
+                        <div class="preview__button-container">
                             <button class="preview__button">Download file</button>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -102,7 +98,11 @@
                         <span class="title-left-word">Share</span>
                         <span class="title-anim-word">anything</span>
                     </div>
-                    <h1 class="title-h1">from anywhere at any time</h1>
+                    <div class="title__wrapper">
+                        <div class="title-text">from anywhere</div>
+                        <div class="title-text">at any time</div>
+                    </div>
+
                 </div>
             </div>
         </div>

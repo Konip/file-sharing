@@ -4,13 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "snowpack dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
-  "devDependencies": {
-    "snowpack": "^3.8.8"
-  }
+  "type": "module"
 }
