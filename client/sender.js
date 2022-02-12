@@ -142,7 +142,8 @@ function sendFile(file) {
     let chunkCounter = 0
 
     // const chunkSize = 10000
-    const chunkSize = 1000000 // 1 mb
+    // const chunkSize = 1000000 // 1 mb
+    const chunkSize = 10000000 // 10 mb
     let numberofChunks = Math.ceil(size / chunkSize);
 
     for (let i = 0; i < numberofChunks; i++) {
